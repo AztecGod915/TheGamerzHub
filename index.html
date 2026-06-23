@@ -2013,4 +2013,488 @@ async function fetchAI() {
       'Diablo IV': 'Dark, addictive action-RPG loot grinding at its absolute best.',
       'Alan Wake 2': 'A psychological horror masterpiece unlike anything else in gaming.',
       'Monster Hunter Wilds': 'Hunt epic monsters in stunning living ecosystems — deeply rewarding.',
-      '
+      'Minecraft': 'Infinite creativity, survival, and adventure — a timeless classic.',
+      'Hades II': 'The best rogue-like ever made, with incredible story and gameplay.',
+      'EA Sports FC 25': 'The best football sim with millions of players worldwide.',
+      'Lies of P': 'A dark Soulslike that nails the formula — tough but incredibly satisfying.',
+      'Helldivers 2': 'Hilarious co-op chaos — fight for Super Earth with your squad.',
+      'Palworld': 'Catch creatures, build bases, and survive — wildly addictive gameplay.',
+      'Black Myth: Wukong': 'Jaw-dropping visuals meet intense action in this Chinese mythology epic.',
+      'Astro Bot': 'Pure joy in game form — the best platformer in years.',
+      'Metaphor: ReFantazio': 'A stunning fantasy RPG from the Persona creators — unforgettable.',
+      'Resident Evil 4 Remake': 'The definitive survival horror experience, rebuilt for a new generation.',
+      'Tekken 8': 'Explosive fighting game action with the best roster in the series.',
+      'Final Fantasy XVI': 'A bold, cinematic action-RPG that redefines the legendary franchise.',
+    };
+
+    const medals = ['🥇','🥈','🥉','🎮'];
+    content.innerHTML = scored4.map((r,i) => {
+      const baseReason = reasons[r.game.title] || `A top-rated ${r.game.genre[0]} game with ${r.game.players} players worldwide.`;
+      const whyTag = r.reasons.length > 0 ? `<span style="font-size:.68rem;color:var(--cyan);font-family:monospace;opacity:.8;margin-bottom:3px;display:block;">▸ ${r.reasons[0]}</span>` : '';
+      return `<div class="ai-rec" onclick="closeAI();openGame(${r.game.id})">
+        <div class="ai-medal">${medals[i]}</div>
+        <div><div class="ai-rec-title">${r.game.title}</div><div style="margin-bottom:4px;">${ratingHTML(r.game.rating)}</div>${whyTag}<div class="ai-rec-reason">${baseReason}</div></div>
+      </div>`;
+    }).join('') +
+    `<p style="font-size:.65rem;color:var(--textdim);font-family:monospace;text-align:center;margin:6px 0 2px;opacity:.6;">Based on your systems, genres & experience level</p>
+    <button class="btn-glow" style="width:100%;padding:10px;margin-top:4px;" onclick="fetchAI()">🔄 DIFFERENT PICKS</button>
+    <div class="pro-teaser-wrap" style="margin-top:12px;">
+      <div class="pro-teaser-blur">
+        <div class="ai-rec"><div class="ai-medal">✦</div><div><div class="ai-rec-title">Claude AI Deep Analysis</div><div class="ai-rec-reason">A full AI breakdown of why this game matches your exact playstyle, mood, and history — written just for you by Claude.</div></div></div>
+        <div class="ai-rec"><div class="ai-medal">✦</div><div><div class="ai-rec-title">Hidden Gem Pick</div><div class="ai-rec-reason">Claude finds games that match you but that you've never heard of — real discovery, not just what's popular.</div></div></div>
+      </div>
+      <div class="pro-teaser-overlay">
+        <span class="pro-lock-icon">🔒</span>
+        <span class="pro-badge">✦ PRO FEATURE</span>
+        <p style="font-size:.72rem;color:var(--textmid);text-align:center;max-width:220px;line-height:1.4;">Unlock real Claude AI picks with full personalized explanations</p>
+        <button class="btn-solid" onclick="closeAI();openProModal()" style="padding:0 20px;height:38px;font-size:.78rem;">✦ UPGRADE TO PRO</button>
+      </div>
+    </div>`;
+
+    // If no profile signals at all, add a tip
+    if (!userSystems && !userGenres && !userExp) {
+      content.innerHTML += `<p style="font-size:.68rem;color:var(--textdim);font-family:monospace;text-align:center;margin-top:8px;padding:8px;border:1px solid var(--border);border-radius:6px;">💡 Set your systems & genres in your Profile for picks tailored just to you!</p>`;
+    }
+  } catch(e) {
+    console.error('fetchAI error:', e);
+    content.innerHTML = '<p style="color:var(--mag);text-align:center;font-family:monospace;font-size:.82rem;">Could not load picks. Try again.</p><button class="btn-glow" style="display:block;margin:12px auto;padding:10px 20px;" onclick="fetchAI()">RETRY</button>';
+  }
+}
+
+// ═══ TOAST ══════════════════════════════════════════════════════════════════
+function showToast(title, sub) {
+  document.getElementById('toastTitle').textContent = title;
+  document.getElementById('toastSub').textContent = sub;
+  document.getElementById('toast').classList.remove('hidden');
+  if (state.toastTimer) clearTimeout(state.toastTimer);
+  state.toastTimer = setTimeout(hideToast, 4000);
+}
+function hideToast() { document.getElementById('toast').classList.add('hidden'); }
+
+// ═══ CLOSE ON OVERLAY CLICK ══════════════════════════════════════════════════
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => {
+    if (e.target===m) {
+      m.classList.add('hidden');
+      state.activeGame=null;
+      state.profileShareOpen=false;
+      if (m.id==='trailerModal') { document.getElementById('trailerWrap').innerHTML=''; }
+      if (m.id==='searchModal') { closeSearchModal(); }
+    }
+  });
+});
+
+// ═══ MAIN RENDER ════════════════════════════════════════════════════════════
+function render() { renderTabs(); renderGrid(); }
+
+// ═══ INIT ════════════════════════════════════════════════════════════════════
+function init() {
+  state.search = '';
+  state.tab = 'discover';
+  state.selSys = [];
+  state.selGenres = [];
+  state.filterOpen = false;
+  try { localStorage.removeItem('gh_search'); localStorage.removeItem('gh_tab'); } catch(e) {}
+  const fp = document.getElementById('filterPanel');
+  if (fp) fp.classList.add('hidden');
+  buildFilterChips();
+  renderBottomNav();
+  try {
+    render();
+  } catch(e) {
+    console.error('render() failed:', e);
+    // Emergency fallback - show games directly
+    const grid = document.getElementById('gameGrid');
+    if (grid) grid.innerHTML = ALL_GAMES.slice(0,20).map(g => gameCardHTML(g)).join('');
+  }
+  initAuth();
+}
+
+
+// ═══ TRAILERS ════════════════════════════════════════════════════════════════
+const TRAILERS = {
+  1: {ytId:'e3Nl_TCQXuw', label:"Elden Ring — Launch Trailer"},
+  2: {ytId:'uHGShqcAHlQ', label:"Zelda TOTK — Trailer"},
+  3: {ytId:'tNxH7YGsXqQ', label:"God of War Ragnarök — Trailer"},
+  4: {ytId:'unC_8KoMRBY', label:"Cyberpunk: Phantom Liberty — Trailer"},
+  5: {ytId:'1X_LFSpFkCI', label:"Hogwarts Legacy — Trailer"},
+  6: {ytId:'JhB7fFcAiZw', label:"Spider-Man 2 — Trailer"},
+  7: {ytId:'IMsIf6j0HpM', label:"Baldur's Gate 3 — Trailer"},
+  8: {ytId:'M4pGDlzsOrw', label:"Call of Duty MW III — Trailer"},
+  9: {ytId:'84FKyzr2Vgs', label:"Starfield — Trailer"},
+  10: {ytId:'oFqAhIRiAi4', label:"Forza Horizon 5 — Trailer"},
+  11: {ytId:'JtxNuAuHBHo', label:"Street Fighter 6 — Trailer"},
+  12: {ytId:'bN6vBQzFrjs', label:"Mario Kart 8 Deluxe — Trailer"},
+  13: {ytId:'a0n_8XIdExo', label:"Diablo IV — Trailer"},
+  14: {ytId:'LRqOGpERVbg', label:"Alan Wake 2 — Trailer"},
+  15: {ytId:'QdBZExpgErs', label:"GTA VI — Official Trailer"},
+  16: {ytId:'JtLFGasMdkA', label:"Monster Hunter Wilds — Trailer"},
+  17: {ytId:'Bh0GFs73Ld8', label:"Pokemon Legends ZA — Trailer"},
+  18: {ytId:'pGTAh6MKVGQ', label:"Hollow Knight Silksong — Trailer"},
+  19: {ytId:'MmB9b5njVbA', label:"Minecraft — Trailer"},
+  20: {ytId:'6OHDhBFnjhY', label:"Hades II — Trailer"},
+  21: {ytId:'ek82cBZ3gig', label:"EA Sports FC 25 — Trailer"},
+  22: {ytId:'qq5CRMtLDZI', label:"Lies of P — Trailer"},
+  23: {ytId:'F2Z3NCYbKMk', label:"The Last of Us Part I — Trailer"},
+  24: {ytId:'uPF8DXfPLVE', label:"Resident Evil 4 Remake — Trailer"},
+  26: {ytId:'2GWgMCKHKo8', label:"Final Fantasy XVI — Trailer"},
+  27: {ytId:'T_bvGnxRq7w', label:"Tekken 8 — Trailer"},
+  28: {ytId:'oMlMSPh7FhE', label:"Palworld — Trailer"},
+  29: {ytId:'a2k5LVOH48A', label:"Helldivers 2 — Trailer"},
+  30: {ytId:'4aPg7kgaIoQ', label:"Dragon's Dogma 2 — Trailer"},
+  31: {ytId:'GT-t_P1V4hg', label:"Black Myth: Wukong — Trailer"},
+  32: {ytId:'my7TJfv18bI', label:"Astro Bot — Trailer"},
+  33: {ytId:'gCih_bFVJAg', label:"Metaphor: ReFantazio — Trailer"},
+  34: {ytId:'T-b6R5Grpxo', label:"Indiana Jones: Great Circle — Trailer"},
+  36: {ytId:'eCtMdNqjHik', label:"Apex Legends — Trailer"},
+  38: {ytId:'8YLGN_JKl7E', label:"Marvel Rivals — Trailer"},
+  39: {ytId:'itpCSYQNQLg', label:"Nintendo Switch 2 — Trailer"},
+  40: {ytId:'9K_pMv7GzwQ', label:"Death Stranding 2 — Trailer"},
+};
+
+// ═══ REVIEWS ═════════════════════════════════════════════════════════════════
+let allReviews = load('gh_reviews', {}); // { gameId: [{author,stars,text,date}] }
+
+let activeTrailerGame = null;
+let reviewStars = 0;
+
+function openTrailer(gameId) {
+  const g = ALL_GAMES.find(x => x.id === gameId);
+  const t = TRAILERS[gameId];
+  if (!g || !t) return;
+  activeTrailerGame = g;
+  document.getElementById('trailerWrap').innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${t.ytId}?autoplay=1&rel=0&modestbranding=1&playsinline=1" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture" loading="lazy" title="${t.label}"></iframe>`;
+  document.getElementById('trailerTitle').textContent = t.label;
+  document.getElementById('trailerActions').innerHTML = `
+    <button class="trailer-btn" onclick="closeTrailer();openGame(${g.id})">🎮 View Game</button>
+    <button class="trailer-btn cyan" onclick="shareTrailer(${g.id})">📤 Share Trailer</button>`;
+  document.getElementById('trailerModal').classList.remove('hidden');
+}
+
+function closeTrailer() {
+  document.getElementById('trailerModal').classList.add('hidden');
+  document.getElementById('trailerWrap').innerHTML = ''; // stop video
+  activeTrailerGame = null;
+}
+
+function shareTrailer(gameId) {
+  const g = ALL_GAMES.find(x => x.id === gameId);
+  const t = TRAILERS[gameId];
+  const text = encodeURIComponent(`🎮 Check out the trailer for ${g.title}! https://www.youtube.com/watch?v=${t.ytId} — Find it on The GamerzHub thegamerzhub.com`);
+  const shareLinks = [
+    {l:'𝕏 Twitter/X', url:`https://twitter.com/intent/tweet?text=${text}`},
+    {l:'WhatsApp',    url:`https://api.whatsapp.com/send?text=${decodeURIComponent(text)}`},
+    {l:'Reddit',      url:`https://reddit.com/submit?url=https://www.youtube.com/watch?v=${t.ytId}&title=${encodeURIComponent(g.title + ' Trailer')}`},
+    {l:'Facebook',    url:`https://www.facebook.com/sharer/sharer.php?u=https://www.youtube.com/watch?v=${t.ytId}`},
+  ];
+  const shareHtml = shareLinks.map(s => `<button class="trailer-btn" onclick="window.open('${s.url}','_blank')">${s.l}</button>`).join('');
+  document.getElementById('trailerActions').innerHTML = `<div style="font-size:.7rem;color:var(--textdim);font-family:monospace;margin-bottom:8px;">// SHARE THIS TRAILER</div>${shareHtml}<button class="trailer-btn" onclick="openTrailer(${gameId})" style="background:var(--border);">← Back</button>`;
+}
+
+// ═══ REVIEWS ════════════════════════════════════════════════════════════════
+function setReviewStars(n) {
+  reviewStars = n;
+  document.querySelectorAll('.star-pick').forEach((btn, i) => {
+    btn.classList.toggle('lit', i < n);
+  });
+}
+
+function submitReview(gameId) {
+  const text = document.getElementById('reviewText').value.trim();
+  if (!reviewStars) { showToast('Pick a star rating first!', 'Tap the stars ⭐'); return; }
+  if (!text) { showToast('Write a review first!', 'Tell us what you think 🎮'); return; }
+  const author = state.profile.username || (state.user?.email?.split('@')[0]) || 'Anonymous Gamer';
+  const review = { author, stars: reviewStars, text, date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) };
+  if (!allReviews[gameId]) allReviews[gameId] = [];
+  allReviews[gameId].unshift(review);
+  save('gh_reviews', allReviews);
+  reviewStars = 0;
+  renderGameModal();
+  showToast('Review posted!', 'Thanks for sharing your take 🎮');
+}
+
+function shareReview(gameId, review) {
+  const g = ALL_GAMES.find(x => x.id === gameId);
+  const stars = '⭐'.repeat(review.stars);
+  const text = encodeURIComponent(`${stars} ${review.stars}/5 — "${review.text}" — My review of ${g.title} on The GamerzHub. thegamerzhub.com`);
+  const links = [
+    {l:'𝕏 Twitter/X', bg:'#111',    url:`https://twitter.com/intent/tweet?text=${text}`},
+    {l:'WhatsApp',    bg:'#25d366', url:`https://api.whatsapp.com/send?text=${decodeURIComponent(text)}`},
+    {l:'Reddit',      bg:'#ff4500', url:`https://reddit.com/submit?title=${encodeURIComponent('My review of '+g.title)}&text=${decodeURIComponent(text)}`},
+    {l:'Facebook',    bg:'#1877f2', url:`https://www.facebook.com/sharer/sharer.php?quote=${decodeURIComponent(text)}`},
+  ];
+  const shareHtml = links.map(s => `<a href="${s.url}" target="_blank" style="padding:4px 10px;background:${s.bg};color:#fff;border-radius:4px;font-size:.68rem;font-weight:700;text-decoration:none;display:inline-block;margin:2px;">${s.l}</a>`).join('');
+  return shareHtml;
+}
+
+function renderReviews(gameId, container) {
+  const reviews = allReviews[gameId] || [];
+  const g = ALL_GAMES.find(x => x.id === gameId);
+  const avg = reviews.length ? (reviews.reduce((a,r)=>a+r.stars,0)/reviews.length).toFixed(1) : null;
+  container.innerHTML = `
+    <div class="review-section">
+      <div class="review-section-title">${avg ? `// COMMUNITY REVIEWS — ⭐ ${avg}/5 (${reviews.length})` : '// COMMUNITY REVIEWS'}</div>
+      <!-- Write review -->
+      <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border);">
+        <div style="color:var(--textmid);font-size:.78rem;margin-bottom:8px;">Rate &amp; review ${g.title}:</div>
+        <div class="star-picker">
+          ${[1,2,3,4,5].map(n=>`<button class="star-pick" onclick="setReviewStars(${n})" title="${n} star${n>1?'s':''}">★</button>`).join('')}
+        </div>
+        <textarea class="review-input" id="reviewText" placeholder="What did you think? Would you recommend it?"></textarea>
+        <button class="review-submit" onclick="submitReview(${gameId})">POST REVIEW</button>
+      </div>
+      <!-- Existing reviews -->
+      ${reviews.length > 0 ? reviews.map((r,i) => `
+        <div class="review-card">
+          <div class="review-header">
+            <span class="review-author">👾 ${r.author}</span>
+            <span class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</span>
+            <span class="review-date">${r.date}</span>
+          </div>
+          <div class="review-text">${r.text}</div>
+          <div class="review-share-row">
+            <span style="color:var(--textdim);font-size:.68rem;align-self:center;">Share:</span>
+            ${shareReview(gameId, r)}
+          </div>
+        </div>`).join('') : '<div class="no-reviews">No reviews yet — be the first! 🎮</div>'}
+    </div>`;
+}
+
+// ═══ TOP GAMES ═══════════════════════════════════════════════════════════════
+let topRibbonTab = 'all';
+
+function renderTopGames() {
+  const hero = document.getElementById('heroSection');
+  if (state.tab !== 'top') { return; }
+
+  const ribbonTabs = [
+    {id:'all',    label:'🏆 Top Rated'},
+    {id:'action', label:'⚔️ Action'},
+    {id:'rpg',    label:'🐉 RPG'},
+    {id:'fps',    label:'🔫 FPS'},
+    {id:'sports', label:'⚽ Sports'},
+    {id:'indie',  label:'🎯 Indie'},
+  ];
+
+  const filterMap = {
+    all:    g => true,
+    action: g => g.genre.some(x=>['Action','Fighting','FPS'].includes(x)),
+    rpg:    g => g.genre.includes('RPG'),
+    fps:    g => g.genre.includes('FPS'),
+    sports: g => g.genre.includes('Sports'),
+    indie:  g => g.genre.includes('Indie'),
+  };
+
+  const games = ALL_GAMES
+    .filter(g => !g.upcoming && g.rating)
+    .filter(filterMap[topRibbonTab])
+    .sort((a,b) => b.rating - a.rating)
+    .slice(0, 12);
+
+  document.getElementById('gameGrid').innerHTML = `
+    <div style="grid-column:1/-1;">
+      <div class="top-ribbon">
+        ${ribbonTabs.map(t=>`<button class="ribbon-tab ${topRibbonTab===t.id?'active':''}" onclick="topRibbonTab='${t.id}';renderTopGames()">${t.label}</button>`).join('')}
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;">
+        ${games.map((g,i) => {
+          const hasTrailer = !!TRAILERS[g.id];
+          const rankClass = i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-other';
+          return `<div class="top-game-card" onclick="openGame(${g.id})">
+            <div class="top-rank ${rankClass}">#${i+1}</div>
+            ${hasTrailer?`<button class="play-trailer-btn" onclick="event.stopPropagation();openTrailer(${g.id})" title="Watch Trailer">▶</button>`:''}
+            <div class="card-img-wrap">
+              <img class="card-img" src="${g.img}" alt="${g.title}" onerror="this.parentElement.innerHTML='<div class=\'card-fallback\'>🎮</div>'"/>
+            </div>
+            <div class="card-body">
+              <div class="card-title">${g.title}</div>
+              <div class="card-rating">${ratingHTML(g.rating)}</div>
+              <div class="card-genres">${g.genre.slice(0,2).map(gn=>badgeHTML(gn)).join('')}</div>
+              <div class="card-footer">
+                <span class="card-price">${g.price}</span>
+                ${hasTrailer?`<button onclick="event.stopPropagation();openTrailer(${g.id})" style="background:var(--mag);border:none;color:#fff;border-radius:4px;padding:3px 8px;font-size:.66rem;font-weight:700;cursor:pointer;">▶ TRAILER</button>`:''}
+              </div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  document.getElementById('countRow').textContent = '';
+  hero.innerHTML = '';
+}
+
+// ═══ COMING SOON TAB ═════════════════════════════════════════════════════════
+function renderComingSoon() {
+  if (state.tab !== 'upcoming') return;
+  const games = ALL_GAMES.filter(g => g.upcoming).sort((a,b)=>new Date(a.releaseDate)-new Date(b.releaseDate));
+  document.getElementById('gameGrid').innerHTML = `
+    <div style="grid-column:1/-1;">
+      <div style="margin-bottom:16px;padding:14px 18px;background:linear-gradient(135deg,rgba(255,26,60,.1),rgba(123,47,255,.06),var(--card));border:1px solid rgba(255,26,60,.25);border-radius:10px;">
+        <div style="color:var(--mag);font-size:.7rem;font-weight:700;letter-spacing:2px;font-family:monospace;margin-bottom:4px;">// COMING SOON</div>
+        <div style="color:var(--textmid);font-size:.84rem;">Set reminders so you never miss a launch day.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
+        ${games.map(g => {
+          const hasTrailer = !!TRAILERS[g.id];
+          const hasReminder = state.reminders.includes(g.id);
+          const releaseStr = new Date(g.releaseDate).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+          const daysLeft = Math.ceil((new Date(g.releaseDate)-new Date())/(1000*60*60*24));
+          return `<div style="background:var(--card);border:1px solid rgba(255,26,60,.3);border-radius:10px;overflow:hidden;position:relative;">
+            <div style="height:2px;background:linear-gradient(90deg,var(--cyan),var(--purple),var(--mag));"></div>
+            <div style="display:flex;gap:14px;padding:14px;">
+              <img src="${g.img}" alt="${g.title}" style="width:80px;height:110px;object-fit:cover;border-radius:6px;flex-shrink:0;" onerror="this.style.display='none'"/>
+              <div style="flex:1;min-width:0;">
+                <div style="font-family:'Orbitron','Inter',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:4px;">${g.title}</div>
+                <div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:6px;">${g.genre.slice(0,2).map(gn=>badgeHTML(gn)).join('')}</div>
+                <div style="color:var(--mag);font-size:.72rem;font-family:monospace;margin-bottom:2px;">📅 ${releaseStr}</div>
+                <div style="color:var(--textdim);font-size:.68rem;font-family:monospace;margin-bottom:10px;">${daysLeft > 0 ? daysLeft+' days away' : 'LAUNCHING SOON'}</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                  <button onclick="toggleRemind(ALL_GAMES.find(x=>x.id===${g.id}))" style="padding:5px 12px;background:${hasReminder?'var(--yellow)':'var(--mag)'};border:none;border-radius:5px;color:${hasReminder?'#0b0c10':'#fff'};font-size:.7rem;font-weight:700;cursor:pointer;">${hasReminder?'🔔 SET':'🔔 REMIND ME'}</button>
+                  ${hasTrailer?`<button onclick="openTrailer(${g.id})" style="padding:5px 12px;background:var(--cyan);border:none;border-radius:5px;color:#0b0c10;font-size:.7rem;font-weight:700;cursor:pointer;">▶ TRAILER</button>`:''}
+                  <button onclick="openGame(${g.id})" style="padding:5px 12px;background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--textmid);font-size:.7rem;cursor:pointer;">INFO</button>
+                </div>
+              </div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+}
+
+
+// ═══ SEARCH MODAL ════════════════════════════════════════════════════════════
+function openSearchModal() {
+  document.getElementById('searchModal').classList.remove('hidden');
+  setTimeout(() => {
+    const inp = document.getElementById('searchModalInput');
+    if (inp) { inp.value = ''; inp.focus(); }
+    renderSearchResults('');
+  }, 50);
+}
+
+function closeSearchModal() {
+  document.getElementById('searchModal').classList.add('hidden');
+  const inp = document.getElementById('searchModalInput');
+  if (inp) inp.value = '';
+}
+
+function renderSearchResults(query) {
+  if (query && query.includes('@')) query = '';
+  const grid = document.getElementById('searchResultsGrid');
+  if (!grid) return;
+  const q = (query || '').toLowerCase().trim();
+  const results = !q
+    ? ALL_GAMES.sort((a,b) => b.popularity - a.popularity).slice(0, 24)
+    : ALL_GAMES.filter(g =>
+        g.title.toLowerCase().includes(q) ||
+        g.genre.some(gn => gn.toLowerCase().includes(q)) ||
+        g.systems.some(s => s.toLowerCase().includes(q))
+      ).slice(0, 24);
+
+  if (!results.length) {
+    grid.innerHTML = `<div class="search-no-results" style="grid-column:1/-1;"><div style="font-size:2rem;margin-bottom:8px;">🕹️</div><div>No games found for "<strong>${query}</strong>"</div></div>`;
+    return;
+  }
+  grid.innerHTML = results.map(g => `
+    <div class="search-result-card" onclick="closeSearchModal();openGame(${g.id})">
+      <img class="search-result-img" src="${g.img}" alt="${g.title}" onerror="this.style.background='#1a1a2e';this.style.display='none'"/>
+      <div class="search-result-body">
+        <div class="search-result-title">${g.title}</div>
+        <div class="search-result-genre">${g.genre.slice(0,2).join(' · ')}</div>
+        <div style="color:var(--yellow);font-size:.7rem;font-family:monospace;margin-top:2px;">${g.price}</div>
+      </div>
+    </div>`).join('');
+}
+
+document.addEventListener('DOMContentLoaded', init);
+
+// ═══ PARTICLES ═══════════════════════════════════════════════════════════════
+function initParticles() {
+  const canvas = document.getElementById('particleCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const hero = canvas.parentElement;
+  canvas.width = hero.offsetWidth;
+  canvas.height = hero.offsetHeight;
+
+  const particles = [];
+  const colors = ['rgba(0,200,255,', 'rgba(255,26,60,', 'rgba(123,47,255,', 'rgba(255,190,11,'];
+
+  for (let i = 0; i < 55; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.8 + 0.4,
+      dx: (Math.random() - 0.5) * 0.5,
+      dy: (Math.random() - 0.5) * 0.5,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      alpha: Math.random() * 0.6 + 0.1,
+      pulse: Math.random() * Math.PI * 2,
+    });
+  }
+
+  let animId;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.pulse += 0.02;
+      const a = p.alpha * (0.6 + 0.4 * Math.sin(p.pulse));
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + a + ')';
+      ctx.fill();
+      p.x += p.dx; p.y += p.dy;
+      if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+    });
+    // Draw connecting lines between close particles
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i+1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 80) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = 'rgba(0,200,255,' + (0.08 * (1 - dist/80)) + ')';
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+    animId = requestAnimationFrame(draw);
+  }
+  draw();
+
+  // Stop animation when hero is gone
+  const obs = new MutationObserver(() => {
+    if (!document.getElementById('particleCanvas')) { cancelAnimationFrame(animId); obs.disconnect(); }
+  });
+  obs.observe(document.getElementById('heroSection'), { childList: true });
+}
+
+// ═══ PROFILE IMAGE UPLOAD ═════════════════════════════════════════════════════
+function triggerImgUpload() {
+  document.getElementById('profileImgInput').click();
+}
+
+function handleImgUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (!file.type.startsWith('image/')) { alert('Please select an image file.'); return; }
+  if (file.size > 5 * 1024 * 1024) { alert('Image must be under 5MB.'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    state.profile.customImg = e.target.result;
+    persist();
+    renderProfile();
+    renderHeaderAuth();
+    renderBottomNav();
+    showToast('Profile photo updated!', 'Looking sharp 🎮');
+  };
+  reader.readAsDataURL(file);
+}
+</script>
+</body>
+</html>
