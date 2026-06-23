@@ -130,9 +130,9 @@ body::after{content:'';position:fixed;left:0;right:0;height:2px;background:linea
 .hero-logo-left{order:-1;}
 .hero-logo-right{order:1;}
 @media(max-width:700px){.hero-logo-right{display:none;}.hero-logo-left{width:80px;height:80px;}.hero-logo{width:80px!important;height:80px!important;}}
-.hero-eyebrow{color:var(--cyan);font-size:.63rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;font-family:monospace;text-shadow:0 0 8px var(--cyan);}
-.hero h1{font-family:'Orbitron','Inter',sans-serif;font-size:clamp(1.4rem,3.5vw,2.2rem);font-weight:900;background:linear-gradient(90deg,var(--cyan),#fff,var(--mag));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.15;margin-bottom:6px;}
-.hero-tagline{font-family:'Orbitron','Inter',sans-serif;font-size:clamp(.7rem,1.5vw,.9rem);font-weight:700;letter-spacing:2px;margin-bottom:14px;background:linear-gradient(90deg,var(--cyan),var(--purple),var(--mag));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-eyebrow{color:var(--cyan);font-size:.82rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;margin-bottom:12px;font-family:monospace;text-shadow:0 0 10px var(--cyan),0 0 20px rgba(0,200,255,.4);}
+.hero h1{font-family:'Orbitron','Inter',sans-serif;font-size:clamp(1.8rem,4.5vw,3rem);font-weight:900;background:linear-gradient(90deg,var(--cyan),#fff,var(--mag));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;margin-bottom:8px;text-shadow:none;letter-spacing:1px;}
+.hero-tagline{font-family:'Orbitron','Inter',sans-serif;font-size:clamp(.85rem,2vw,1.15rem);font-weight:700;letter-spacing:3px;margin-bottom:16px;background:linear-gradient(90deg,var(--cyan),var(--purple),var(--mag));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .hero p{color:var(--textmid);max-width:440px;line-height:1.75;margin-bottom:18px;font-size:.86rem;}
 .hero-btns{display:flex;gap:10px;flex-wrap:wrap;}
 .hero-stats{display:flex;gap:20px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px solid rgba(0,200,255,.12);}
@@ -361,6 +361,54 @@ body::after{content:'';position:fixed;left:0;right:0;height:2px;background:linea
   .header-inner{gap:16px;}
   .search-wrap{max-width:460px;}
 }
+
+/*──── Trailer Modal ────*/
+#trailerModal .modal-box{max-width:860px;}
+.trailer-wrap{position:relative;width:100%;padding-bottom:56.25%;height:0;overflow:hidden;background:#000;border-radius:0 0 0 0;}
+.trailer-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+.trailer-info{padding:16px 20px 20px;}
+.trailer-title{font-family:'Orbitron','Inter',sans-serif;font-size:1.1rem;font-weight:900;color:var(--text);margin-bottom:6px;}
+.trailer-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--mag);border:none;border-radius:6px;color:#fff;font-weight:700;font-size:.78rem;cursor:pointer;transition:all .15s;margin-right:8px;margin-top:8px;font-family:inherit;}
+.trailer-btn:hover{opacity:.85;transform:translateY(-1px);}
+.trailer-btn.cyan{background:var(--cyan);color:#0b0c10;}
+
+/*──── Review System ────*/
+.review-section{margin-top:20px;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:8px;}
+.review-section-title{color:var(--cyan);font-size:.64rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;font-family:monospace;}
+.star-picker{display:flex;gap:6px;margin-bottom:12px;}
+.star-pick{font-size:1.4rem;cursor:pointer;transition:transform .1s;color:var(--textdim);background:none;border:none;padding:2px;}
+.star-pick:hover,.star-pick.lit{color:var(--yellow);transform:scale(1.2);}
+.review-input{width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--text);font-size:.84rem;resize:vertical;min-height:70px;outline:none;transition:border-color .15s;font-family:inherit;}
+.review-input:focus{border-color:var(--cyan);}
+.review-submit{margin-top:8px;padding:9px 20px;background:var(--cyan);border:none;border-radius:6px;color:#0b0c10;font-weight:800;font-size:.8rem;cursor:pointer;font-family:inherit;transition:all .15s;}
+.review-submit:hover{opacity:.85;}
+.review-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:8px;}
+.review-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:6px;}
+.review-author{font-weight:700;font-size:.8rem;color:var(--text);}
+.review-stars{color:var(--yellow);font-size:.85rem;letter-spacing:1px;}
+.review-date{color:var(--textdim);font-size:.68rem;font-family:monospace;}
+.review-text{color:var(--textmid);font-size:.82rem;line-height:1.6;}
+.review-share-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.review-share-btn{padding:4px 10px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--textmid);font-size:.68rem;font-weight:600;cursor:pointer;transition:all .15s;font-family:inherit;}
+.review-share-btn:hover{border-color:var(--cyan);color:var(--cyan);}
+.no-reviews{color:var(--textdim);font-size:.8rem;font-style:italic;text-align:center;padding:12px 0;}
+
+/*──── Top Games Tab Ribbon ────*/
+.top-ribbon{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;margin:12px 0 16px;border-radius:8px;background:var(--card);border:1px solid var(--border);padding:4px;}
+.top-ribbon::-webkit-scrollbar{display:none;}
+.ribbon-tab{padding:7px 16px;border-radius:6px;border:none;background:transparent;color:var(--textmid);font-size:.78rem;font-weight:500;white-space:nowrap;cursor:pointer;transition:all .15s;font-family:inherit;}
+.ribbon-tab.active{background:linear-gradient(135deg,rgba(0,200,255,.18),rgba(255,26,60,.1));color:var(--cyan);font-weight:700;border:1px solid rgba(0,200,255,.3);}
+
+/*──── Top Game Card ────*/
+.top-game-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;transition:all .2s;position:relative;display:flex;gap:0;flex-direction:column;}
+.top-game-card:hover{transform:translateY(-3px);border-color:rgba(0,200,255,.4);box-shadow:0 0 22px rgba(0,200,255,.2),0 8px 28px rgba(0,0,0,.6);}
+.top-rank{position:absolute;top:8px;left:8px;font-family:'Orbitron','Inter',sans-serif;font-size:.7rem;font-weight:900;padding:3px 8px;border-radius:4px;z-index:2;}
+.rank-1{background:linear-gradient(90deg,#ffd700,#ff8c00);color:#000;}
+.rank-2{background:linear-gradient(90deg,#c0c0c0,#a8a8a8);color:#000;}
+.rank-3{background:linear-gradient(90deg,#cd7f32,#a0522d);color:#fff;}
+.rank-other{background:rgba(0,0,0,.6);color:var(--textmid);border:1px solid var(--border);}
+.play-trailer-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;background:rgba(0,0,0,.7);border:2px solid rgba(255,255,255,.8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;opacity:0;transition:opacity .2s;z-index:2;}
+.top-game-card:hover .play-trailer-btn{opacity:1;}
 </style>
 </head>
 <body>
@@ -438,6 +486,19 @@ body::after{content:'';position:fixed;left:0;right:0;height:2px;background:linea
     <div id="toastSub" style="color:var(--textmid);font-size:.7rem;margin-top:2px;"></div>
   </div>
   <button class="toast-dismiss" onclick="hideToast()">✕</button>
+</div>
+
+
+<!-- ══ TRAILER MODAL ══ -->
+<div class="modal-overlay hidden" id="trailerModal">
+  <div class="modal-box">
+    <div class="modal-neon-top cyan-mag"></div>
+    <div class="trailer-wrap" id="trailerWrap"></div>
+    <div class="trailer-info">
+      <div class="trailer-title" id="trailerTitle"></div>
+      <div id="trailerActions"></div>
+    </div>
+  </div>
 </div>
 
 <!-- ══ AUTH MODAL ══ -->
@@ -566,6 +627,7 @@ body::after{content:'';position:fixed;left:0;right:0;height:2px;background:linea
         <div class="store-grid" id="gameModalStores"></div>
       </div>
       <div class="action-row" id="gameModalActions"></div>
+      <div id="gameModalReviews"></div>
       <div id="gameModalSharePanel" class="hidden">
         <div class="share-panel">
           <div class="modal-section-label">// SHARE WITH YOUR CREW</div>
@@ -631,8 +693,12 @@ const ALL_GAMES = [
 
 // ═══ SUPABASE ════════════════════════════════════════════════════════════════
 // Replace these with your actual Supabase project URL and anon key
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+// ┌─────────────────────────────────────────────────────────────┐
+// │  PASTE YOUR SUPABASE KEYS HERE — get them from:            │
+// │  supabase.com → TheGamerzHub project → Settings → API      │
+// └─────────────────────────────────────────────────────────────┘
+const SUPABASE_URL = 'https://ztdzxyczojiwpbytembi.supabase.co';
+const SUPABASE_ANON_KEY = 'PASTE_YOUR_ANON_KEY_HERE';
 let supabaseClient = null;
 try {
   supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
@@ -859,12 +925,11 @@ function renderTabs() {
 function renderBottomNav() {
   const items = [
     {id:'discover',icon:'🕹️',label:'Discover'},
-    {id:'upcoming',icon:'🚀',label:'Soon'},
-    {id:'wishlist', icon:'★', label:'Wishlist'},
+    {id:'top',     icon:'🏆', label:'Top'},
+    {id:'upcoming',icon:'🚀', label:'Soon'},
     {id:'favorites',icon:'♥', label:'Saved'},
-    {id:'reminders',icon:'🔔',label:'Alerts'},
     {id:'ai',       icon:'✦', label:'For Me'},
-    {id:'profile',  icon: state.profile.avatar||'👾', label:'Profile'},
+    {id:'profile',  icon: state.profile.customImg ? `<img src="${state.profile.customImg}" style="width:22px;height:22px;border-radius:50%;object-fit:cover;border:1px solid var(--cyan);" alt=""/>` : (state.profile.avatar||'👾'), label:'Profile'},
   ];
   document.getElementById('bottomNav').innerHTML = items.map(n =>
     `<button class="nav-btn ${state.tab===n.id?'active':''}" onclick="${n.id==='ai'?'openAI()':n.id==='profile'?'openProfile()':"setTab('" + n.id + "')"}"><span class="nav-icon">${n.icon}</span><span>${n.label}</span></button>`
@@ -873,6 +938,8 @@ function renderBottomNav() {
 
 // ═══ GAME GRID ══════════════════════════════════════════════════════════════
 function renderGrid() {
+  if (state.tab === 'top') { renderTopGames(); return; }
+  if (state.tab === 'upcoming') { renderComingSoon(); return; }
   const games = getFiltered();
   document.getElementById('countRow').textContent = `${games.length} GAME${games.length!==1?'S':''}${(state.selSys.length+state.selGenres.length)>0?' MATCHING':''}`;
   const hero = document.getElementById('heroSection');
@@ -956,10 +1023,12 @@ function renderGameModal() {
   document.getElementById('gameModalSystems').innerHTML = g.systems.map(s=>badgeHTML(SYS_ICONS[s]+' '+s,'green')).join(' ');
   document.getElementById('gameModalBuyLabel').innerHTML = `// GET IT — <span style="color:var(--yellow)">${g.price}</span>`;
   document.getElementById('gameModalStores').innerHTML = g.stores.map(s=>`<a class="store-link" href="${s.url}" target="_blank" rel="noopener noreferrer">🛒 ${s.name}</a>`).join('');
+  const hasTrailer = !!TRAILERS[g.id];
   document.getElementById('gameModalActions').innerHTML = `
     <button style="background:${isFav?'var(--mag)':'var(--cyan)'};border:none;color:${isFav?'#fff':'#0b0c10'};border-radius:6px;" onclick="toggleFav(${g.id},null);renderGameModal()">${isFav?'♥ SAVED':'♡ FAVORITE'}</button>
     <button style="background:${isWish?'var(--yellow)':'var(--green)'};border:none;color:#0b0c10;border-radius:6px;" onclick="toggleWish(${g.id});renderGameModal()">${isWish?'★ WISHLIST':'☆ WANT IT'}</button>
     ${g.upcoming?`<button style="background:${hasRem?'var(--yellow)':'var(--mag)'};border:none;color:${hasRem?'#0b0c10':'#fff'};border-radius:6px;" onclick="toggleRemind(ALL_GAMES.find(x=>x.id===${g.id}))">${hasRem?'🔔 REMIND SET':'🔔 REMIND ME'}</button>`:''}
+    ${hasTrailer?`<button style="background:var(--mag);border:none;color:#fff;border-radius:6px;" onclick="openTrailer(${g.id})">▶ TRAILER</button>`:''}
     <button style="background:transparent;border:1px solid var(--cyan);color:var(--cyan);border-radius:6px;" onclick="toggleGameShare()">📤 SHARE</button>`;
   const shareText = `🎮 ${g.title} on The GamerzHub! ${g.rating?`Rated ${g.rating}/10`:'Coming soon!'} — ${g.desc}`;
   const shareUrl = `https://thegamerzhub.com/game/${g.id}`;
@@ -973,6 +1042,8 @@ function renderGameModal() {
     {l:'Discord',bg:'#5865f2',action:'copyGame'},
   ].map(o=>`<button class="share-btn" style="background:${o.bg}" onclick="${o.action?'copyGameShare()':"window.open('"+o.url+"','_blank')"}">${o.l}</button>`).join('');
   document.getElementById('gameModalSharePanel').classList.toggle('hidden', !state.gameShareOpen);
+  // Render reviews
+  renderReviews(g.id, document.getElementById('gameModalReviews'));
 }
 
 function toggleGameShare() { state.gameShareOpen = !state.gameShareOpen; renderGameModal(); }
@@ -1216,7 +1287,14 @@ function hideToast() { document.getElementById('toast').classList.add('hidden');
 
 // ═══ CLOSE ON OVERLAY CLICK ══════════════════════════════════════════════════
 document.querySelectorAll('.modal-overlay').forEach(m => {
-  m.addEventListener('click', e => { if (e.target===m) { m.classList.add('hidden'); state.activeGame=null; state.profileShareOpen=false; } });
+  m.addEventListener('click', e => {
+    if (e.target===m) {
+      m.classList.add('hidden');
+      state.activeGame=null;
+      state.profileShareOpen=false;
+      if (m.id==='trailerModal') { document.getElementById('trailerWrap').innerHTML=''; }
+    }
+  });
 });
 
 // ═══ MAIN RENDER ════════════════════════════════════════════════════════════
@@ -1228,6 +1306,242 @@ function init() {
   renderBottomNav();
   render();
   initAuth();
+}
+
+
+// ═══ TRAILERS ════════════════════════════════════════════════════════════════
+const TRAILERS = {
+  1:  {ytId:'e3Nl_TCQXuw', label:'Elden Ring — Launch Trailer'},
+  2:  {ytId:'uHGShqcAHlQ', label:'Zelda: Tears of the Kingdom — Launch Trailer'},
+  3:  {ytId:'tNxH7YGsXqQ', label:'God of War Ragnarök — Story Trailer'},
+  4:  {ytId:'unC_8KoMRBY', label:'Phantom Liberty — Official Trailer'},
+  5:  {ytId:'1X_LFSpFkCI', label:'Hogwarts Legacy — Gameplay Trailer'},
+  6:  {ytId:'JhB7fFcAiZw', label:"Spider-Man 2 — Launch Trailer"},
+  7:  {ytId:'ONgl0hJkBxs', label:"Baldur's Gate 3 — Launch Trailer"},
+  8:  {ytId:'M4pGDlzsOrw', label:'Call of Duty: MW III — Official Trailer'},
+  9:  {ytId:'84FKyzr2Vgs', label:'Starfield — Official Gameplay Trailer'},
+  10: {ytId:'oFqAhIRiAi4', label:'Forza Horizon 5 — Announce Trailer'},
+  11: {ytId:'JtxNuAuHBHo', label:'Street Fighter 6 — Launch Trailer'},
+  12: {ytId:'bN6vBQzFrjs', label:'Mario Kart 8 Deluxe — Overview Trailer'},
+  13: {ytId:'a0n_8XIdExo', label:'Diablo IV — Cinematic Trailer'},
+  14: {ytId:'LRqOGpERVbg', label:'Alan Wake 2 — Launch Trailer'},
+  15: {ytId:'QdBZExpgErs', label:'GTA VI — Official Trailer'},
+  16: {ytId:'JtLFGasMdkA', label:'Monster Hunter Wilds — Gameplay Trailer'},
+  17: {ytId:'Bh0GFs73Ld8', label:'Pokémon Legends: Z-A — Announcement Trailer'},
+  18: {ytId:'pGTAh6MKVGQ', label:'Hollow Knight: Silksong — Reveal Trailer'},
+  19: {ytId:'MmB9b5njVbA', label:'Minecraft — Official Trailer'},
+  20: {ytId:'6OHDhBFnjhY', label:'Hades II — Early Access Trailer'},
+  21: {ytId:'ek82cBZ3gig', label:'EA Sports FC 25 — Official Trailer'},
+  22: {ytId:'qq5CRMtLDZI', label:'Lies of P — Launch Trailer'},
+};
+
+// ═══ REVIEWS ═════════════════════════════════════════════════════════════════
+let allReviews = load('gh_reviews', {}); // { gameId: [{author,stars,text,date}] }
+
+let activeTrailerGame = null;
+let reviewStars = 0;
+
+function openTrailer(gameId) {
+  const g = ALL_GAMES.find(x => x.id === gameId);
+  const t = TRAILERS[gameId];
+  if (!g || !t) return;
+  activeTrailerGame = g;
+  document.getElementById('trailerWrap').innerHTML = `<iframe src="https://www.youtube.com/embed/${t.ytId}?autoplay=1&rel=0" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+  document.getElementById('trailerTitle').textContent = t.label;
+  document.getElementById('trailerActions').innerHTML = `
+    <button class="trailer-btn" onclick="closeTrailer();openGame(${g.id})">🎮 View Game</button>
+    <button class="trailer-btn cyan" onclick="shareTrailer(${g.id})">📤 Share Trailer</button>`;
+  document.getElementById('trailerModal').classList.remove('hidden');
+}
+
+function closeTrailer() {
+  document.getElementById('trailerModal').classList.add('hidden');
+  document.getElementById('trailerWrap').innerHTML = ''; // stop video
+  activeTrailerGame = null;
+}
+
+function shareTrailer(gameId) {
+  const g = ALL_GAMES.find(x => x.id === gameId);
+  const t = TRAILERS[gameId];
+  const text = encodeURIComponent(`🎮 Check out the trailer for ${g.title}! https://www.youtube.com/watch?v=${t.ytId} — Find it on The GamerzHub thegamerzhub.com`);
+  const shareLinks = [
+    {l:'𝕏 Twitter/X', url:`https://twitter.com/intent/tweet?text=${text}`},
+    {l:'WhatsApp',    url:`https://api.whatsapp.com/send?text=${decodeURIComponent(text)}`},
+    {l:'Reddit',      url:`https://reddit.com/submit?url=https://www.youtube.com/watch?v=${t.ytId}&title=${encodeURIComponent(g.title + ' Trailer')}`},
+    {l:'Facebook',    url:`https://www.facebook.com/sharer/sharer.php?u=https://www.youtube.com/watch?v=${t.ytId}`},
+  ];
+  const shareHtml = shareLinks.map(s => `<button class="trailer-btn" onclick="window.open('${s.url}','_blank')">${s.l}</button>`).join('');
+  document.getElementById('trailerActions').innerHTML = `<div style="font-size:.7rem;color:var(--textdim);font-family:monospace;margin-bottom:8px;">// SHARE THIS TRAILER</div>${shareHtml}<button class="trailer-btn" onclick="openTrailer(${gameId})" style="background:var(--border);">← Back</button>`;
+}
+
+// ═══ REVIEWS ════════════════════════════════════════════════════════════════
+function setReviewStars(n) {
+  reviewStars = n;
+  document.querySelectorAll('.star-pick').forEach((btn, i) => {
+    btn.classList.toggle('lit', i < n);
+  });
+}
+
+function submitReview(gameId) {
+  const text = document.getElementById('reviewText').value.trim();
+  if (!reviewStars) { showToast('Pick a star rating first!', 'Tap the stars ⭐'); return; }
+  if (!text) { showToast('Write a review first!', 'Tell us what you think 🎮'); return; }
+  const author = state.profile.username || (state.user?.email?.split('@')[0]) || 'Anonymous Gamer';
+  const review = { author, stars: reviewStars, text, date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) };
+  if (!allReviews[gameId]) allReviews[gameId] = [];
+  allReviews[gameId].unshift(review);
+  save('gh_reviews', allReviews);
+  reviewStars = 0;
+  renderGameModal();
+  showToast('Review posted!', 'Thanks for sharing your take 🎮');
+}
+
+function shareReview(gameId, review) {
+  const g = ALL_GAMES.find(x => x.id === gameId);
+  const stars = '⭐'.repeat(review.stars);
+  const text = encodeURIComponent(`${stars} ${review.stars}/5 — "${review.text}" — My review of ${g.title} on The GamerzHub. thegamerzhub.com`);
+  const links = [
+    {l:'𝕏 Twitter/X', bg:'#111',    url:`https://twitter.com/intent/tweet?text=${text}`},
+    {l:'WhatsApp',    bg:'#25d366', url:`https://api.whatsapp.com/send?text=${decodeURIComponent(text)}`},
+    {l:'Reddit',      bg:'#ff4500', url:`https://reddit.com/submit?title=${encodeURIComponent('My review of '+g.title)}&text=${decodeURIComponent(text)}`},
+    {l:'Facebook',    bg:'#1877f2', url:`https://www.facebook.com/sharer/sharer.php?quote=${decodeURIComponent(text)}`},
+  ];
+  const shareHtml = links.map(s => `<a href="${s.url}" target="_blank" style="padding:4px 10px;background:${s.bg};color:#fff;border-radius:4px;font-size:.68rem;font-weight:700;text-decoration:none;display:inline-block;margin:2px;">${s.l}</a>`).join('');
+  return shareHtml;
+}
+
+function renderReviews(gameId, container) {
+  const reviews = allReviews[gameId] || [];
+  const g = ALL_GAMES.find(x => x.id === gameId);
+  const avg = reviews.length ? (reviews.reduce((a,r)=>a+r.stars,0)/reviews.length).toFixed(1) : null;
+  container.innerHTML = `
+    <div class="review-section">
+      <div class="review-section-title">${avg ? `// COMMUNITY REVIEWS — ⭐ ${avg}/5 (${reviews.length})` : '// COMMUNITY REVIEWS'}</div>
+      <!-- Write review -->
+      <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border);">
+        <div style="color:var(--textmid);font-size:.78rem;margin-bottom:8px;">Rate &amp; review ${g.title}:</div>
+        <div class="star-picker">
+          ${[1,2,3,4,5].map(n=>`<button class="star-pick" onclick="setReviewStars(${n})" title="${n} star${n>1?'s':''}">★</button>`).join('')}
+        </div>
+        <textarea class="review-input" id="reviewText" placeholder="What did you think? Would you recommend it?"></textarea>
+        <button class="review-submit" onclick="submitReview(${gameId})">POST REVIEW</button>
+      </div>
+      <!-- Existing reviews -->
+      ${reviews.length > 0 ? reviews.map((r,i) => `
+        <div class="review-card">
+          <div class="review-header">
+            <span class="review-author">👾 ${r.author}</span>
+            <span class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</span>
+            <span class="review-date">${r.date}</span>
+          </div>
+          <div class="review-text">${r.text}</div>
+          <div class="review-share-row">
+            <span style="color:var(--textdim);font-size:.68rem;align-self:center;">Share:</span>
+            ${shareReview(gameId, r)}
+          </div>
+        </div>`).join('') : '<div class="no-reviews">No reviews yet — be the first! 🎮</div>'}
+    </div>`;
+}
+
+// ═══ TOP GAMES ═══════════════════════════════════════════════════════════════
+let topRibbonTab = 'all';
+
+function renderTopGames() {
+  const hero = document.getElementById('heroSection');
+  if (state.tab !== 'top') { return; }
+
+  const ribbonTabs = [
+    {id:'all',    label:'🏆 Top Rated'},
+    {id:'action', label:'⚔️ Action'},
+    {id:'rpg',    label:'🐉 RPG'},
+    {id:'fps',    label:'🔫 FPS'},
+    {id:'sports', label:'⚽ Sports'},
+    {id:'indie',  label:'🎯 Indie'},
+  ];
+
+  const filterMap = {
+    all:    g => true,
+    action: g => g.genre.some(x=>['Action','Fighting','FPS'].includes(x)),
+    rpg:    g => g.genre.includes('RPG'),
+    fps:    g => g.genre.includes('FPS'),
+    sports: g => g.genre.includes('Sports'),
+    indie:  g => g.genre.includes('Indie'),
+  };
+
+  const games = ALL_GAMES
+    .filter(g => !g.upcoming && g.rating)
+    .filter(filterMap[topRibbonTab])
+    .sort((a,b) => b.rating - a.rating)
+    .slice(0, 12);
+
+  document.getElementById('gameGrid').innerHTML = `
+    <div style="grid-column:1/-1;">
+      <div class="top-ribbon">
+        ${ribbonTabs.map(t=>`<button class="ribbon-tab ${topRibbonTab===t.id?'active':''}" onclick="topRibbonTab='${t.id}';renderTopGames()">${t.label}</button>`).join('')}
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;">
+        ${games.map((g,i) => {
+          const hasTrailer = !!TRAILERS[g.id];
+          const rankClass = i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-other';
+          return `<div class="top-game-card" onclick="openGame(${g.id})">
+            <div class="top-rank ${rankClass}">#${i+1}</div>
+            ${hasTrailer?`<button class="play-trailer-btn" onclick="event.stopPropagation();openTrailer(${g.id})" title="Watch Trailer">▶</button>`:''}
+            <div class="card-img-wrap">
+              <img class="card-img" src="${g.img}" alt="${g.title}" onerror="this.parentElement.innerHTML='<div class=\'card-fallback\'>🎮</div>'"/>
+            </div>
+            <div class="card-body">
+              <div class="card-title">${g.title}</div>
+              <div class="card-rating">${ratingHTML(g.rating)}</div>
+              <div class="card-genres">${g.genre.slice(0,2).map(gn=>badgeHTML(gn)).join('')}</div>
+              <div class="card-footer">
+                <span class="card-price">${g.price}</span>
+                ${hasTrailer?`<button onclick="event.stopPropagation();openTrailer(${g.id})" style="background:var(--mag);border:none;color:#fff;border-radius:4px;padding:3px 8px;font-size:.66rem;font-weight:700;cursor:pointer;">▶ TRAILER</button>`:''}
+              </div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  document.getElementById('countRow').textContent = '';
+  hero.innerHTML = '';
+}
+
+// ═══ COMING SOON TAB ═════════════════════════════════════════════════════════
+function renderComingSoon() {
+  if (state.tab !== 'upcoming') return;
+  const games = ALL_GAMES.filter(g => g.upcoming).sort((a,b)=>new Date(a.releaseDate)-new Date(b.releaseDate));
+  document.getElementById('gameGrid').innerHTML = `
+    <div style="grid-column:1/-1;">
+      <div style="margin-bottom:16px;padding:14px 18px;background:linear-gradient(135deg,rgba(255,26,60,.1),rgba(123,47,255,.06),var(--card));border:1px solid rgba(255,26,60,.25);border-radius:10px;">
+        <div style="color:var(--mag);font-size:.7rem;font-weight:700;letter-spacing:2px;font-family:monospace;margin-bottom:4px;">// COMING SOON</div>
+        <div style="color:var(--textmid);font-size:.84rem;">Set reminders so you never miss a launch day.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
+        ${games.map(g => {
+          const hasTrailer = !!TRAILERS[g.id];
+          const hasReminder = state.reminders.includes(g.id);
+          const releaseStr = new Date(g.releaseDate).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+          const daysLeft = Math.ceil((new Date(g.releaseDate)-new Date())/(1000*60*60*24));
+          return `<div style="background:var(--card);border:1px solid rgba(255,26,60,.3);border-radius:10px;overflow:hidden;position:relative;">
+            <div style="height:2px;background:linear-gradient(90deg,var(--cyan),var(--purple),var(--mag));"></div>
+            <div style="display:flex;gap:14px;padding:14px;">
+              <img src="${g.img}" alt="${g.title}" style="width:80px;height:110px;object-fit:cover;border-radius:6px;flex-shrink:0;" onerror="this.style.display='none'"/>
+              <div style="flex:1;min-width:0;">
+                <div style="font-family:'Orbitron','Inter',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:4px;">${g.title}</div>
+                <div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:6px;">${g.genre.slice(0,2).map(gn=>badgeHTML(gn)).join('')}</div>
+                <div style="color:var(--mag);font-size:.72rem;font-family:monospace;margin-bottom:2px;">📅 ${releaseStr}</div>
+                <div style="color:var(--textdim);font-size:.68rem;font-family:monospace;margin-bottom:10px;">${daysLeft > 0 ? daysLeft+' days away' : 'LAUNCHING SOON'}</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                  <button onclick="toggleRemind(ALL_GAMES.find(x=>x.id===${g.id}))" style="padding:5px 12px;background:${hasReminder?'var(--yellow)':'var(--mag)'};border:none;border-radius:5px;color:${hasReminder?'#0b0c10':'#fff'};font-size:.7rem;font-weight:700;cursor:pointer;">${hasReminder?'🔔 SET':'🔔 REMIND ME'}</button>
+                  ${hasTrailer?`<button onclick="openTrailer(${g.id})" style="padding:5px 12px;background:var(--cyan);border:none;border-radius:5px;color:#0b0c10;font-size:.7rem;font-weight:700;cursor:pointer;">▶ TRAILER</button>`:''}
+                  <button onclick="openGame(${g.id})" style="padding:5px 12px;background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--textmid);font-size:.7rem;cursor:pointer;">INFO</button>
+                </div>
+              </div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
 }
 
 document.addEventListener('DOMContentLoaded', init);
