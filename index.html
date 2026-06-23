@@ -76,7 +76,7 @@ body::after{content:'';position:fixed;left:0;right:0;height:2px;background:linea
 .search-wrap{flex:1;max-width:420px;position:relative;min-width:0;}
 @media(max-width:380px){.search-wrap{max-width:140px;}}
 .search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--textdim);pointer-events:none;}
-#searchInput{width:100%;padding:0 10px 0 32px;height:36px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:0.83rem;outline:none;transition:border-color .15s;}
+#searchInput{width:100%;padding:0 10px 0 12px;height:36px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:0.83rem;outline:none;transition:border-color .15s;}
 #searchInput:focus{border-color:var(--cyan);}
 .btn-solid{background:var(--cyan);border:none;color:#0b0c10;border-radius:6px;padding:0 14px;height:36px;font-weight:800;font-size:0.76rem;letter-spacing:.8px;transition:all .15s;white-space:nowrap;flex-shrink:0;}
 .btn-solid:hover{opacity:.85;transform:translateY(-1px);}
@@ -455,8 +455,8 @@ html,body{width:100%;overflow-x:hidden;}
       <span class="logo-text">THE GAMERZ<span style="-webkit-text-fill-color:var(--mag);color:var(--mag);">HUB</span></span>
     </a>
     <div class="search-wrap">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input id="searchInput" type="text" placeholder="Search games, genres..." oninput="onSearch(this.value)" autocomplete="off" onfocus="if(this.value===this.defaultValue)this.value=''" />
+      
+      <input id="searchInput" type="search" placeholder="🔍 Search games..." oninput="onSearch(this.value)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" name="gamesearch" value=""/>
     </div>
     <button class="btn-solid" onclick="openAI()">✦ FOR ME</button>
     <button class="btn-glow" id="filterToggle" onclick="toggleFilter()">FILTER <span id="filterBadge" class="filter-badge hidden"></span></button>
@@ -915,8 +915,19 @@ function toggleRemind(game) {
 }
 
 // ═══ FILTER / SEARCH ════════════════════════════════════════════════════════
-function setTab(t) { state.tab = t; topRibbonTab = 'all'; render(); renderBottomNav(); }
-function onSearch(v) { state.search = v; render(); }
+function setTab(t) {
+  state.tab = t;
+  topRibbonTab = 'all';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  render();
+  renderBottomNav();
+}
+function onSearch(v) {
+  // Never treat an email address as a search query
+  if (v && v.includes('@') && v.includes('.')) return;
+  state.search = v;
+  render();
+}
 function toggleFilter() { state.filterOpen = !state.filterOpen; document.getElementById('filterPanel').classList.toggle('hidden', !state.filterOpen); document.getElementById('filterToggle').classList.toggle('btn-solid', state.filterOpen); }
 
 function toggleSys(s) { state.selSys = state.selSys.includes(s) ? state.selSys.filter(x=>x!==s) : [...state.selSys, s]; updateFilterChips(); renderFilterBadge(); render(); }
@@ -998,6 +1009,8 @@ function renderBottomNav() {
 function renderGrid() {
   if (state.tab === 'top') { renderTopGames(); return; }
   if (state.tab === 'upcoming') { renderComingSoon(); return; }
+  // Safety: if search looks like an email, clear it
+  if (state.search && state.search.includes('@')) { state.search = ''; const si=document.getElementById('searchInput'); if(si) si.value=''; }
   const games = getFiltered();
   document.getElementById('countRow').textContent = `${games.length} GAME${games.length!==1?'S':''}${(state.selSys.length+state.selGenres.length)>0?' MATCHING':''}`;
   const hero = document.getElementById('heroSection');
@@ -1360,12 +1373,24 @@ function render() { renderTabs(); renderGrid(); }
 
 // ═══ INIT ════════════════════════════════════════════════════════════════════
 function init() {
+  // Always start fresh — clear any stale search/filter state
   state.search = '';
   state.tab = 'discover';
   state.selSys = [];
   state.selGenres = [];
+  state.filterOpen = false;
+  // Clear stale localStorage keys that might have search baked in
+  try {
+    localStorage.removeItem('gh_search');
+    localStorage.removeItem('gh_tab');
+    localStorage.removeItem('gh_filters');
+  } catch(e) {}
+  // Clear the search input
   const si = document.getElementById('searchInput');
-  if(si) si.value = '';
+  if (si) { si.value = ''; si.defaultValue = ''; }
+  // Hide filter panel
+  const fp = document.getElementById('filterPanel');
+  if (fp) fp.classList.add('hidden');
   buildFilterChips();
   renderBottomNav();
   render();
