@@ -81,7 +81,7 @@ body::after{content:'';position:fixed;left:0;right:0;height:2px;background:linea
   border-bottom:1px solid var(--border);
 }
 .neon-bar{height:2px;background:linear-gradient(90deg,var(--cyan),var(--purple),var(--mag),var(--orange),var(--cyan));background-size:300% 100%;animation:neonBar 4s linear infinite;}
-.header-inner{max-width:1300px;margin:0 auto;padding:0 12px;height:var(--header-h);display:flex;align-items:center;gap:8px;width:100%;overflow:hidden;}
+.header-inner{max-width:1300px;margin:0 auto;padding:0 20px;height:var(--header-h);display:flex;align-items:center;gap:12px;width:100%;overflow:hidden;}.header-inner .search-open-btn{flex:1;max-width:420px;justify-content:flex-start;}#headerAuthArea{margin-left:auto;flex-shrink:0;}
 .logo-wrap{display:flex;align-items:center;gap:10px;flex-shrink:0;cursor:pointer;text-decoration:none;}
 .logo-img{width:36px;height:36px;object-fit:contain;filter:drop-shadow(0 0 10px rgba(0,200,255,0.6)) drop-shadow(0 0 20px rgba(255,26,60,0.3));}
 .logo-text{font-family:'Orbitron','Inter',sans-serif;font-weight:900;font-size:1.05rem;background:linear-gradient(90deg,var(--cyan),#fff,var(--mag));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:1.5px;white-space:nowrap;}
@@ -856,7 +856,7 @@ const ALL_GAMES = [
 // │  supabase.com → TheGamerzHub project → Settings → API      │
 // └─────────────────────────────────────────────────────────────┘
 const SUPABASE_URL = 'https://ztdzxyczojiwpbytembi.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp0ZHp4eWN6b2ppd3BieXRlbWJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxNTQ1OTMsImV4cCI6MjA5NzczMDU5M30.FAIstkBI_oFT3ZjE3jrIeuJymHf37pqufD1-YOwP6w4';
+const SUPABASE_ANON_KEY = 'PASTE_YOUR_ANON_KEY_HERE';
 let supabaseClient = null;
 try {
   if(SUPABASE_URL.includes('YOUR_') || SUPABASE_ANON_KEY.includes('PASTE_') || SUPABASE_ANON_KEY.includes('YOUR_')) {
@@ -961,7 +961,15 @@ function renderHeaderAuth() {
   }
   if (state.user) {
     const avatarContent = state.profile.customImg ? `<img src="${state.profile.customImg}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" alt="Profile"/>` : (state.profile.avatar||'🎮');
-    el.innerHTML = `<div class="user-bar"><span class="user-bar-name">${state.user.email?.split('@')[0]||'Gamer'}</span><button class="avatar-btn" onclick="openProfile()" title="My Profile">${avatarContent}</button></div>`;
+    const signedInName = state.profile.username || state.user.email?.split('@')[0] || 'Gamer';
+    const signedInMotto = state.profile.motto;
+    el.innerHTML = `<div class="user-bar">
+      <div class="header-user-info">
+        <span class="user-bar-name">${signedInName}</span>
+        ${signedInMotto ? `<span class="header-motto">"${signedInMotto}"</span>` : ''}
+      </div>
+      <button class="avatar-btn" onclick="openProfile()" title="My Profile">${avatarContent}</button>
+    </div>`;
   } else {
     const avatarContent2 = state.profile.customImg ? `<img src="${state.profile.customImg}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" alt="Profile"/>` : (state.profile.avatar||'🎮');
     const guestName = state.profile.username;
@@ -1450,39 +1458,72 @@ function closeAI() { document.getElementById('aiModal').classList.add('hidden');
 async function fetchAI() {
   const systems = state.selSys.length>0 ? state.selSys : Object.keys(state.profile.systemTags||{});
   const content = document.getElementById('aiContent');
-  content.innerHTML = '<div class="ai-loading"><div class="spin-icon">🎮</div><p style="color:var(--cyan);font-family:monospace;font-size:.8rem;margin-top:14px;letter-spacing:1px;">SCANNING DATABASE...</p></div>';
+  content.innerHTML = '<div class="ai-loading"><div class="spin-icon">🎮</div><p style="color:var(--cyan);font-family:monospace;font-size:.8rem;margin-top:14px;letter-spacing:1px;">SCANNING YOUR PROFILE...</p></div>';
 
-  // Build personalized picks locally using scoring algorithm
-  // (Anthropic API requires a backend proxy - using smart local algorithm instead)
   try {
     const userSystems = systems.length > 0 ? systems : null;
     const userGenres = state.selGenres.length > 0 ? state.selGenres : null;
-    const userExp = state.experience || state.profile.experience || '';
+    const userExp = state.profile.experience || '';
+    const savedIds = new Set([...(state.favorites||[]), ...(state.wishlist||[])]);
+    const wishlistIds = new Set(state.wishlist||[]);
 
-    // Score each game based on user profile
+    // Tier labels that explain WHY a game was chosen
+    const pickReasons = {};
+    function addReason(id, reason) { if (!pickReasons[id]) pickReasons[id] = []; pickReasons[id].push(reason); }
+
+    const easyGames = ['Minecraft','Forza Horizon 5','Mario Kart 8 Deluxe','Hogwarts Legacy','Stardew Valley','Among Us','It Takes Two','Fortnite'];
+    const hardGames = ['Elden Ring','Sekiro','Dark Souls','Lies of P','Hollow Knight','Hades','Celeste'];
+    const casualExp = ['Beginner','Casual'];
+    const hardcoreExp = ['Hardcore','Veteran','Pro'];
+
     const scored = ALL_GAMES
-      .filter(g => !g.upcoming && g.rating)
+      .filter(g => !g.upcoming && g.rating && !savedIds.has(g.id))
       .map(g => {
-        let score = g.popularity * 0.3 + (g.rating || 0) * 5;
-        // Boost for matching systems
-        if (userSystems && g.systems.some(s => userSystems.includes(s))) score += 40;
-        // Boost for matching genres
+        let score = g.popularity * 0.25 + (g.rating || 0) * 4;
+
+        // System match — strongest signal
+        if (userSystems && g.systems.some(s => userSystems.includes(s))) {
+          score += 45;
+          const matchedSys = g.systems.find(s => userSystems.includes(s));
+          addReason(g.id, `Playable on your ${matchedSys}`);
+        }
+
+        // Genre match — second strongest signal
         if (userGenres) {
-          const matches = g.genre.filter(gn => userGenres.includes(gn)).length;
-          score += matches * 25;
+          const matches = g.genre.filter(gn => userGenres.includes(gn));
+          score += matches.length * 30;
+          if (matches.length > 0) addReason(g.id, `Matches your ${matches.join(' & ')} taste`);
         }
-        // Experience level adjustments
-        if (userExp === 'Beginner' || userExp === 'Casual') {
-          if (['Minecraft','Forza Horizon 5','Mario Kart 8 Deluxe','Hogwarts Legacy'].includes(g.title)) score += 20;
-        } else if (userExp === 'Hardcore' || userExp === 'Veteran' || userExp === 'Pro') {
-          if (['Elden Ring',"Baldur's Gate 3",'Lies of P','Hades II','Hollow Knight: Silksong'].some(t=>g.title.includes(t.split(' ')[0]))) score += 20;
-        }
-        // Add randomness for variety
-        score += Math.random() * 15;
-        return { game: g, score };
-      })
-      .sort((a,b) => b.score - a.score)
-      .slice(0, 4);
+
+        // Experience level fit
+        const isEasy = easyGames.some(t => g.title.includes(t.split(' ')[0]));
+        const isHard = hardGames.some(t => g.title.includes(t.split(' ')[0]));
+        if (casualExp.includes(userExp) && isEasy) { score += 25; addReason(g.id, 'Great for your playstyle'); }
+        if (hardcoreExp.includes(userExp) && isHard) { score += 25; addReason(g.id, 'Built for serious players'); }
+        if (casualExp.includes(userExp) && isHard) score -= 10;
+        if (hardcoreExp.includes(userExp) && isEasy) score -= 5;
+
+        // Wishlist games get a slight nudge (user showed interest)
+        if (wishlistIds.has(g.id)) { score += 10; addReason(g.id, 'On your wishlist'); }
+
+        // Highly-rated hidden gems (rating ≥ 9.3, popularity < 85)
+        if ((g.rating||0) >= 9.3 && (g.popularity||0) < 85) { score += 15; addReason(g.id, 'Hidden gem'); }
+
+        // Randomness: stratified — top games get up to ±20 pts, others ±10
+        const randBand = score > 80 ? 20 : 10;
+        score += (Math.random() - 0.3) * randBand;
+
+        return { game: g, score, reasons: pickReasons[g.id] || [] };
+      });
+
+    // Sort and take top 10, then randomly pick 4 from those — ensures variety each click
+    const top10 = scored.sort((a,b) => b.score - a.score).slice(0, 10);
+    // Fisher-Yates shuffle the top 10 then take first 4
+    for (let i = top10.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [top10[i], top10[j]] = [top10[j], top10[i]];
+    }
+    const scored4 = top10.slice(0, 4).sort((a,b) => b.score - a.score);
 
     const reasons = {
       'Elden Ring': 'A masterpiece open-world RPG — challenging, rewarding, and endlessly explorable.',
@@ -1515,15 +1556,21 @@ async function fetchAI() {
     };
 
     const medals = ['🥇','🥈','🥉','🎮'];
-    content.innerHTML = scored.map((r,i) => {
-      const reason = reasons[r.game.title] || `A top-rated ${r.game.genre[0]} game with ${r.game.players} players worldwide.`;
+    content.innerHTML = scored4.map((r,i) => {
+      const baseReason = reasons[r.game.title] || `A top-rated ${r.game.genre[0]} game with ${r.game.players} players worldwide.`;
+      const whyTag = r.reasons.length > 0 ? `<span style="font-size:.68rem;color:var(--cyan);font-family:monospace;opacity:.8;margin-bottom:3px;display:block;">▸ ${r.reasons[0]}</span>` : '';
       return `<div class="ai-rec" onclick="closeAI();openGame(${r.game.id})">
         <div class="ai-medal">${medals[i]}</div>
-        <div><div class="ai-rec-title">${r.game.title}</div><div style="margin-bottom:4px;">${ratingHTML(r.game.rating)}</div><div class="ai-rec-reason">${reason}</div></div>
+        <div><div class="ai-rec-title">${r.game.title}</div><div style="margin-bottom:4px;">${ratingHTML(r.game.rating)}</div>${whyTag}<div class="ai-rec-reason">${baseReason}</div></div>
       </div>`;
     }).join('') +
-    `<button class="btn-glow" style="width:100%;padding:10px;margin-top:4px;" onclick="fetchAI()">🔄 DIFFERENT PICKS</button>`;
+    `<p style="font-size:.65rem;color:var(--textdim);font-family:monospace;text-align:center;margin:6px 0 2px;opacity:.6;">Based on your systems, genres & experience level</p>
+    <button class="btn-glow" style="width:100%;padding:10px;margin-top:4px;" onclick="fetchAI()">🔄 DIFFERENT PICKS</button>`;
 
+    // If no profile signals at all, add a tip
+    if (!userSystems && !userGenres && !userExp) {
+      content.innerHTML += `<p style="font-size:.68rem;color:var(--textdim);font-family:monospace;text-align:center;margin-top:8px;padding:8px;border:1px solid var(--border);border-radius:6px;">💡 Set your systems & genres in your Profile for picks tailored just to you!</p>`;
+    }
   } catch(e) {
     console.error('fetchAI error:', e);
     content.innerHTML = '<p style="color:var(--mag);text-align:center;font-family:monospace;font-size:.82rem;">Could not load picks. Try again.</p><button class="btn-glow" style="display:block;margin:12px auto;padding:10px 20px;" onclick="fetchAI()">RETRY</button>';
