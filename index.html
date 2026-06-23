@@ -1039,15 +1039,15 @@ function renderBottomNav() {
 
 // ═══ GAME GRID ══════════════════════════════════════════════════════════════
 function renderGrid() {
-  if (state.tab === 'top') { renderTopGames(); return; }
-  if (state.tab === 'upcoming') { renderComingSoon(); return; }
-  // Safety: if search looks like an email, clear it
-  if (state.search && state.search.includes('@')) { state.search = ''; const si=document.getElementById('searchInput'); if(si) si.value=''; }
+  if (state.tab === 'top') { try { renderTopGames(); } catch(e){ console.error(e); } return; }
+  if (state.tab === 'upcoming') { try { renderComingSoon(); } catch(e){ console.error(e); } return; }
+  if (state.search && state.search.includes('@')) { state.search = ''; }
   const games = getFiltered();
   document.getElementById('countRow').textContent = `${games.length} GAME${games.length!==1?'S':''}${(state.selSys.length+state.selGenres.length)>0?' MATCHING':''}`;
+  try {
   const hero = document.getElementById('heroSection');
   if (state.tab==='discover' && !state.search && state.selSys.length===0 && state.selGenres.length===0) {
-    const logoSrc = document.querySelector('.logo-img').src;
+    const logoEl = document.querySelector('.logo-img'); const logoSrc = logoEl ? logoEl.src : '';
     hero.innerHTML = `<div class="hero">
       <canvas id="particleCanvas"></canvas>
       <div class="hero-inner">
@@ -1089,6 +1089,10 @@ function renderGrid() {
     return;
   }
   document.getElementById('gameGrid').innerHTML = games.map(g => gameCardHTML(g)).join('');
+  } catch(err) {
+    console.error('renderGrid error:', err);
+    document.getElementById('gameGrid').innerHTML = ALL_GAMES.slice(0,20).map(g => gameCardHTML(g)).join('');
+  }
 }
 
 function gameCardHTML(g) {
@@ -1396,7 +1400,7 @@ document.querySelectorAll('.modal-overlay').forEach(m => {
       state.activeGame=null;
       state.profileShareOpen=false;
       if (m.id==='trailerModal') { document.getElementById('trailerWrap').innerHTML=''; }
-      if (m.id==='searchModal') { state.search=''; }
+      if (m.id==='searchModal') { closeSearchModal(); }
     }
   });
 });
@@ -1416,7 +1420,14 @@ function init() {
   if (fp) fp.classList.add('hidden');
   buildFilterChips();
   renderBottomNav();
-  render();
+  try {
+    render();
+  } catch(e) {
+    console.error('render() failed:', e);
+    // Emergency fallback - show games directly
+    const grid = document.getElementById('gameGrid');
+    if (grid) grid.innerHTML = ALL_GAMES.slice(0,20).map(g => gameCardHTML(g)).join('');
+  }
   initAuth();
 }
 
@@ -1669,6 +1680,51 @@ function renderComingSoon() {
         }).join('')}
       </div>
     </div>`;
+}
+
+
+// ═══ SEARCH MODAL ════════════════════════════════════════════════════════════
+function openSearchModal() {
+  document.getElementById('searchModal').classList.remove('hidden');
+  setTimeout(() => {
+    const inp = document.getElementById('searchModalInput');
+    if (inp) { inp.value = ''; inp.focus(); }
+    renderSearchResults('');
+  }, 50);
+}
+
+function closeSearchModal() {
+  document.getElementById('searchModal').classList.add('hidden');
+  const inp = document.getElementById('searchModalInput');
+  if (inp) inp.value = '';
+}
+
+function renderSearchResults(query) {
+  if (query && query.includes('@')) query = '';
+  const grid = document.getElementById('searchResultsGrid');
+  if (!grid) return;
+  const q = (query || '').toLowerCase().trim();
+  const results = !q
+    ? ALL_GAMES.sort((a,b) => b.popularity - a.popularity).slice(0, 24)
+    : ALL_GAMES.filter(g =>
+        g.title.toLowerCase().includes(q) ||
+        g.genre.some(gn => gn.toLowerCase().includes(q)) ||
+        g.systems.some(s => s.toLowerCase().includes(q))
+      ).slice(0, 24);
+
+  if (!results.length) {
+    grid.innerHTML = `<div class="search-no-results" style="grid-column:1/-1;"><div style="font-size:2rem;margin-bottom:8px;">🕹️</div><div>No games found for "<strong>${query}</strong>"</div></div>`;
+    return;
+  }
+  grid.innerHTML = results.map(g => `
+    <div class="search-result-card" onclick="closeSearchModal();openGame(${g.id})">
+      <img class="search-result-img" src="${g.img}" alt="${g.title}" onerror="this.style.background='#1a1a2e';this.style.display='none'"/>
+      <div class="search-result-body">
+        <div class="search-result-title">${g.title}</div>
+        <div class="search-result-genre">${g.genre.slice(0,2).join(' · ')}</div>
+        <div style="color:var(--yellow);font-size:.7rem;font-family:monospace;margin-top:2px;">${g.price}</div>
+      </div>
+    </div>`).join('');
 }
 
 document.addEventListener('DOMContentLoaded', init);
