@@ -84,13 +84,17 @@
 
 
 <script>
-// Load Supabase with fallback CDN (jsdelivr blocked by some browsers)
+// Load Supabase — pinned exact version, crossorigin=anonymous prevents tracking cookie warnings
 (function() {
   var s = document.createElement('script');
-  s.src = 'https://unpkg.com/@supabase/supabase-js@2';
+  // Pinned exact version: stops the redirect chain that triggers tracking-prevention spam
+  s.src = 'https://unpkg.com/@supabase/supabase-js@2.39.3/dist/umd/supabase.js';
+  s.crossOrigin = 'anonymous';
   s.onerror = function() {
+    // Fallback: jsdelivr (also pinned + anonymous)
     var s2 = document.createElement('script');
-    s2.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+    s2.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js';
+    s2.crossOrigin = 'anonymous';
     document.head.appendChild(s2);
   };
   document.head.appendChild(s);
@@ -992,7 +996,18 @@ try {
   // Wait for Supabase SDK to load (CDN loaded async)
   function initSupabase() {
     if (window.supabase) {
-      try { supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); initAuth(); }
+      try {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+          auth: {
+            storage: window.localStorage,       // use localStorage, not cookies → no tracking-prevention warnings
+            storageKey: 'gh_supabase_auth',      // namespaced key so it doesn't clash
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: true,
+          }
+        });
+        initAuth();
+      }
       catch(e) { console.error('Supabase init error:', e); supabaseClient = null; }
     } else {
       setTimeout(initSupabase, 100);
@@ -1998,19 +2013,4 @@ async function fetchAI() {
       'Diablo IV': 'Dark, addictive action-RPG loot grinding at its absolute best.',
       'Alan Wake 2': 'A psychological horror masterpiece unlike anything else in gaming.',
       'Monster Hunter Wilds': 'Hunt epic monsters in stunning living ecosystems — deeply rewarding.',
-      'Minecraft': 'Infinite creativity, survival, and adventure — a timeless classic.',
-      'Hades II': 'The best rogue-like ever made, with incredible story and gameplay.',
-      'EA Sports FC 25': 'The best football sim with millions of players worldwide.',
-      'Lies of P': 'A dark Soulslike that nails the formula — tough but incredibly satisfying.',
-      'Helldivers 2': 'Hilarious co-op chaos — fight for Super Earth with your squad.',
-      'Palworld': 'Catch creatures, build bases, and survive — wildly addictive gameplay.',
-      'Black Myth: Wukong': 'Jaw-dropping visuals meet intense action in this Chinese mythology epic.',
-      'Astro Bot': 'Pure joy in game form — the best platformer in years.',
-      'Metaphor: ReFantazio': 'A stunning fantasy RPG from the Persona creators — unforgettable.',
-      'Resident Evil 4 Remake': 'The definitive survival horror experience, rebuilt for a new generation.',
-      'Tekken 8': 'Explosive fighting game action with the best roster in the series.',
-      'Final Fantasy XVI': 'A bold, cinematic action-RPG that redefines the legendary franchise.',
-    };
-
-    const medals = ['🥇','🥈','🥉','🎮'];
-    con
+      '
