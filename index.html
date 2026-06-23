@@ -81,7 +81,7 @@ body::after{content:'';position:fixed;left:0;right:0;height:2px;background:linea
   border-bottom:1px solid var(--border);
 }
 .neon-bar{height:2px;background:linear-gradient(90deg,var(--cyan),var(--purple),var(--mag),var(--orange),var(--cyan));background-size:300% 100%;animation:neonBar 4s linear infinite;}
-.header-inner{max-width:1300px;margin:0 auto;padding:0 12px;height:var(--header-h);display:flex;align-items:center;gap:8px;width:100%;}
+.header-inner{max-width:1300px;margin:0 auto;padding:0 12px;height:var(--header-h);display:flex;align-items:center;gap:8px;width:100%;overflow:hidden;}
 .logo-wrap{display:flex;align-items:center;gap:10px;flex-shrink:0;cursor:pointer;text-decoration:none;}
 .logo-img{width:36px;height:36px;object-fit:contain;filter:drop-shadow(0 0 10px rgba(0,200,255,0.6)) drop-shadow(0 0 20px rgba(255,26,60,0.3));}
 .logo-text{font-family:'Orbitron','Inter',sans-serif;font-weight:900;font-size:1.05rem;background:linear-gradient(90deg,var(--cyan),#fff,var(--mag));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:1.5px;white-space:nowrap;}
@@ -131,25 +131,25 @@ body::after{content:'';position:fixed;left:0;right:0;height:2px;background:linea
 /*──── Hero Banner ────*/
 /* ── Hero ── */
 .hero{margin:14px 0;padding:0;background:transparent;border:none;border-radius:12px;position:relative;overflow:hidden;}
-.hero-inner{padding:28px 16px 28px;background:linear-gradient(135deg,rgba(0,80,180,.15),rgba(123,47,255,.06),rgba(180,0,40,.12),rgba(5,6,8,.97));border:1px solid rgba(0,200,255,.22);border-radius:12px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:nowrap;width:100%;}
-@media(max-width:600px){.hero-inner{flex-wrap:wrap;justify-content:center;padding:20px 14px 22px;}}
+.hero-inner{padding:28px 16px 28px;background:linear-gradient(135deg,rgba(0,80,180,.15),rgba(123,47,255,.06),rgba(180,0,40,.12),rgba(5,6,8,.97));border:1px solid rgba(0,200,255,.22);border-radius:12px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:nowrap;width:100%;}
+@media(max-width:750px){.hero-inner{flex-wrap:wrap;justify-content:center;padding:20px 14px 22px;}}
 .hero-glow-left{position:absolute;top:-60px;left:-40px;width:380px;height:380px;background:radial-gradient(circle,rgba(0,140,255,.22),rgba(0,60,200,.08) 50%,transparent 70%);pointer-events:none;animation:heroGlowPulse 4s ease-in-out infinite;}
 .hero-glow-right{position:absolute;bottom:-60px;right:-20px;width:340px;height:340px;background:radial-gradient(circle,rgba(200,0,40,.2),rgba(120,0,20,.08) 50%,transparent 70%);pointer-events:none;animation:heroGlowPulse 4s ease-in-out infinite reverse;}
 .hero-glow-mid{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:200px;background:radial-gradient(circle,rgba(123,47,255,.08),transparent 70%);pointer-events:none;}
 .hero-logo-wrap{flex-shrink:0;position:relative;z-index:2;}
-.hero-logo{width:clamp(130px,16vw,210px);height:clamp(130px,16vw,210px);object-fit:contain;filter:drop-shadow(0 0 28px rgba(0,200,255,.8)) drop-shadow(0 0 56px rgba(255,26,60,.6));animation:heroLogoFloat 3s ease-in-out infinite;}
+.hero-logo{width:clamp(100px,13vw,180px);height:clamp(100px,13vw,180px);object-fit:contain;filter:drop-shadow(0 0 28px rgba(0,200,255,.8)) drop-shadow(0 0 56px rgba(255,26,60,.6));animation:heroLogoFloat 3s ease-in-out infinite;}
 .hero-logo-right .hero-logo{animation-delay:-1.5s;}
-.hero-content{flex:1;min-width:220px;position:relative;z-index:2;text-align:center;display:flex;flex-direction:column;align-items:center;}
+.hero-content{flex:1;min-width:0;position:relative;z-index:2;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .hero-content p{text-align:center;max-width:400px;}
 .hero-logo-left{order:-1;}
 .hero-logo-right{order:1;}
-@media(max-width:700px){.hero-logo-right{display:none;}.hero-logo-left{width:100px;height:100px;}.hero-logo{width:100px!important;height:100px!important;}}
+@media(max-width:750px){.hero-logo-right{display:none;}.hero-logo-left{order:0;width:auto;height:auto;}.hero-logo{width:clamp(80px,25vw,130px)!important;height:clamp(80px,25vw,130px)!important;}}
 .hero-eyebrow{color:var(--cyan);font-size:.82rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;margin-bottom:12px;font-family:monospace;text-shadow:0 0 10px var(--cyan),0 0 20px rgba(0,200,255,.4);}
 .hero h1{font-family:'Orbitron','Inter',sans-serif;font-size:clamp(1.8rem,4.5vw,3rem);font-weight:900;background:linear-gradient(90deg,var(--cyan),#fff,var(--mag));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;margin-bottom:8px;text-shadow:none;letter-spacing:1px;}
 .hero-tagline{font-family:'Orbitron','Inter',sans-serif;font-size:clamp(.85rem,2vw,1.15rem);font-weight:700;letter-spacing:3px;margin-bottom:16px;background:linear-gradient(90deg,var(--cyan),var(--purple),var(--mag));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .hero p{color:var(--textmid);max-width:440px;line-height:1.75;margin-bottom:18px;font-size:.86rem;}
-.hero-btns{display:flex;gap:10px;flex-wrap:wrap;}
-.hero-stats{display:flex;gap:20px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px solid rgba(0,200,255,.12);}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%;}
+.hero-stats{display:flex;gap:20px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px solid rgba(0,200,255,.12);justify-content:center;width:100%;}
 .hero-stat{text-align:center;}
 .hero-stat-num{font-family:'Orbitron','Inter',sans-serif;font-size:1.2rem;font-weight:900;background:linear-gradient(90deg,var(--cyan),var(--mag));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .hero-stat-label{color:var(--textdim);font-size:.62rem;font-family:monospace;letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
@@ -455,7 +455,7 @@ html,body{width:100%;overflow-x:hidden;}
   .search-wrap{max-width:120px;}
 }
 
-.search-open-btn{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border);color:var(--textmid);border-radius:6px;padding:0 14px;height:36px;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .15s;flex:1;max-width:300px;letter-spacing:.3px;}
+.search-open-btn{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border);color:var(--textmid);border-radius:6px;padding:0 14px;height:36px;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .15s;flex:1;min-width:0;max-width:300px;letter-spacing:.3px;overflow:hidden;}
 .search-open-btn:hover{border-color:var(--cyan);color:var(--cyan);}
 @media(max-width:480px){.search-open-btn span{display:none;}.search-open-btn{max-width:42px;padding:0;justify-content:center;flex:0 0 42px;}}
 
@@ -472,6 +472,12 @@ html,body{width:100%;overflow-x:hidden;}
 .search-result-title{font-size:.75rem;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:3px;font-family:'Orbitron','Inter',sans-serif;}
 .search-result-genre{font-size:.63rem;color:var(--textdim);}
 .search-no-results{text-align:center;padding:30px;color:var(--textdim);font-size:.85rem;}
+
+@media(max-width:480px){
+  .hero-btns{flex-direction:column;align-items:center;}
+  .hero-btns button{width:85%;max-width:280px;}
+  .hero h1{font-size:1.8rem;}
+}
 </style>
 </head>
 <body>
@@ -1092,8 +1098,8 @@ function renderGrid() {
           <div class="hero-tagline">ONE PLACE. ALL GAMES. ALL YOU.</div>
           <p>Discover games by system, genre &amp; play style. Save favorites, build your wishlist, set release reminders, and share your gamer tags with your crew.</p>
           <div class="hero-btns">
-            <button class="btn-solid" onclick="openAI()" style="padding:0 22px;height:42px;font-size:.85rem;letter-spacing:1px;">✦ GET MY PICKS</button>
-            <button class="btn-glow mag" onclick="openProfile()" style="padding:0 22px;height:42px;font-size:.85rem;">👾 MY PROFILE</button>
+            <button class="btn-solid" onclick="openAI()" style="padding:0 28px;height:44px;font-size:.88rem;letter-spacing:1px;min-width:200px;">✦ GET MY PICKS</button>
+            <button class="btn-glow mag" onclick="openProfile()" style="padding:0 28px;height:44px;font-size:.88rem;min-width:200px;">👾 MY PROFILE</button>
           </div>
           <div class="hero-stats">
             <div class="hero-stat"><div class="hero-stat-num">40+</div><div class="hero-stat-label">Games</div></div>
@@ -1200,9 +1206,8 @@ function cancelEdit() { state.profileEditing=false; renderProfile(); }
 function setAvatar(a) { state.profile.avatar = a; renderProfile(); renderHeaderAuth(); renderBottomNav(); }
 
 function setExpLevel(lv) {
-  if (!state.profileEditing) return;
   state.profile.experience = state.profile.experience===lv ? '' : lv;
-  persist(); renderProfile();
+  persist(); renderProfile(); renderHeaderAuth();
 }
 
 function toggleSysOwned(sys) {
@@ -1358,7 +1363,7 @@ function renderProfile() {
 
   // Experience
   document.getElementById('expSection').innerHTML = EXP_LEVELS.map(lv =>
-    `<button class="exp-chip ${p.experience===lv?'active':''}" onclick="setExpLevel('${lv}')" style="cursor:${editing?'pointer':'default'}">${lv}</button>`
+    `<button class="exp-chip ${p.experience===lv?'active':''}" onclick="setExpLevel('${lv}')" style="cursor:pointer;">${lv}</button>`
   ).join('');
 
   // Favorites & Wishlist
@@ -1389,23 +1394,82 @@ async function fetchAI() {
   const systems = state.selSys.length>0 ? state.selSys : Object.keys(state.profile.systemTags||{});
   const content = document.getElementById('aiContent');
   content.innerHTML = '<div class="ai-loading"><div class="spin-icon">🎮</div><p style="color:var(--cyan);font-family:monospace;font-size:.8rem;margin-top:14px;letter-spacing:1px;">SCANNING DATABASE...</p></div>';
-  const list = ALL_GAMES.map(g=>`"${g.title}" (${g.genre.join(', ')}) — ${g.systems.join(', ')} — Rating:${g.rating||'TBD'} — ${g.upcoming?'Coming Soon':'Out Now'}`).join('\n');
-  const prompt = `You are a gaming expert at The GamerzHub. Recommend exactly 4 games from the list based on this gamer\'s profile.\nPROFILE:\n- Systems: ${systems.length>0?systems.join(', '):'any'}\n- Genres: ${state.selGenres.length>0?state.selGenres.join(', '):'any'}\n- Experience: ${state.experience||state.profile.experience||'not specified'}\nGAMES:\n${list}\n\nRespond ONLY with a JSON array, no markdown, no preamble:\n[{"title":"exact title","reason":"one sentence personalized reason"}]`;
+
+  // Build personalized picks locally using scoring algorithm
+  // (Anthropic API requires a backend proxy - using smart local algorithm instead)
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
-    const data = await res.json();
-    const text = data.content?.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim();
-    const parsed = JSON.parse(text);
-    const recs = parsed.map(r=>({...r,game:ALL_GAMES.find(g=>g.title===r.title)})).filter(r=>r.game);
+    const userSystems = systems.length > 0 ? systems : null;
+    const userGenres = state.selGenres.length > 0 ? state.selGenres : null;
+    const userExp = state.experience || state.profile.experience || '';
+
+    // Score each game based on user profile
+    const scored = ALL_GAMES
+      .filter(g => !g.upcoming && g.rating)
+      .map(g => {
+        let score = g.popularity * 0.3 + (g.rating || 0) * 5;
+        // Boost for matching systems
+        if (userSystems && g.systems.some(s => userSystems.includes(s))) score += 40;
+        // Boost for matching genres
+        if (userGenres) {
+          const matches = g.genre.filter(gn => userGenres.includes(gn)).length;
+          score += matches * 25;
+        }
+        // Experience level adjustments
+        if (userExp === 'Beginner' || userExp === 'Casual') {
+          if (['Minecraft','Forza Horizon 5','Mario Kart 8 Deluxe','Hogwarts Legacy'].includes(g.title)) score += 20;
+        } else if (userExp === 'Hardcore' || userExp === 'Veteran' || userExp === 'Pro') {
+          if (['Elden Ring',"Baldur's Gate 3",'Lies of P','Hades II','Hollow Knight: Silksong'].some(t=>g.title.includes(t.split(' ')[0]))) score += 20;
+        }
+        // Add randomness for variety
+        score += Math.random() * 15;
+        return { game: g, score };
+      })
+      .sort((a,b) => b.score - a.score)
+      .slice(0, 4);
+
+    const reasons = {
+      'Elden Ring': 'A masterpiece open-world RPG — challenging, rewarding, and endlessly explorable.',
+      'Zelda: Tears of the Kingdom': 'The most creative open world ever made — build anything, go anywhere.',
+      'God of War Ragnarök': 'Epic storytelling meets brutal combat in a stunning Norse saga.',
+      'Cyberpunk 2077: Phantom Liberty': 'A gritty spy thriller in the most immersive city in gaming.',
+      'Hogwarts Legacy': 'Live your Hogwarts fantasy in a gorgeous open world full of secrets.',
+      "Marvel's Spider-Man 2": 'The ultimate superhero game — thrilling, emotional, and visually stunning.',
+      "Baldur's Gate 3": 'The deepest RPG ever made — every choice matters in this D&D epic.',
+      'Call of Duty: MW III': 'Fast, polished multiplayer action with all the classic maps you love.',
+      'Starfield': 'A massive space exploration RPG with over 1,000 planets to discover.',
+      'Forza Horizon 5': 'The best racing game ever made — gorgeous Mexico, endless content.',
+      'Street Fighter 6': 'The most accessible and deep fighting game in years.',
+      'Mario Kart 8 Deluxe': 'The definitive party racing game — fun for everyone, every time.',
+      'Diablo IV': 'Dark, addictive action-RPG loot grinding at its absolute best.',
+      'Alan Wake 2': 'A psychological horror masterpiece unlike anything else in gaming.',
+      'Monster Hunter Wilds': 'Hunt epic monsters in stunning living ecosystems — deeply rewarding.',
+      'Minecraft': 'Infinite creativity, survival, and adventure — a timeless classic.',
+      'Hades II': 'The best rogue-like ever made, with incredible story and gameplay.',
+      'EA Sports FC 25': 'The best football sim with millions of players worldwide.',
+      'Lies of P': 'A dark Soulslike that nails the formula — tough but incredibly satisfying.',
+      'Helldivers 2': 'Hilarious co-op chaos — fight for Super Earth with your squad.',
+      'Palworld': 'Catch creatures, build bases, and survive — wildly addictive gameplay.',
+      'Black Myth: Wukong': 'Jaw-dropping visuals meet intense action in this Chinese mythology epic.',
+      'Astro Bot': 'Pure joy in game form — the best platformer in years.',
+      'Metaphor: ReFantazio': 'A stunning fantasy RPG from the Persona creators — unforgettable.',
+      'Resident Evil 4 Remake': 'The definitive survival horror experience, rebuilt for a new generation.',
+      'Tekken 8': 'Explosive fighting game action with the best roster in the series.',
+      'Final Fantasy XVI': 'A bold, cinematic action-RPG that redefines the legendary franchise.',
+    };
+
     const medals = ['🥇','🥈','🥉','🎮'];
-    content.innerHTML = recs.map((r,i)=>`
-      <div class="ai-rec" onclick="closeAI();openGame(${r.game.id})">
+    content.innerHTML = scored.map((r,i) => {
+      const reason = reasons[r.game.title] || `A top-rated ${r.game.genre[0]} game with ${r.game.players} players worldwide.`;
+      return `<div class="ai-rec" onclick="closeAI();openGame(${r.game.id})">
         <div class="ai-medal">${medals[i]}</div>
-        <div><div class="ai-rec-title">${r.game.title}</div><div style="margin-bottom:4px;">${ratingHTML(r.game.rating)}</div><div class="ai-rec-reason">${r.reason}</div></div>
-      </div>`).join('') +
-      `<button class="btn-glow" style="width:100%;padding:10px;margin-top:4px;" onclick="fetchAI()">🔄 DIFFERENT PICKS</button>`;
+        <div><div class="ai-rec-title">${r.game.title}</div><div style="margin-bottom:4px;">${ratingHTML(r.game.rating)}</div><div class="ai-rec-reason">${reason}</div></div>
+      </div>`;
+    }).join('') +
+    `<button class="btn-glow" style="width:100%;padding:10px;margin-top:4px;" onclick="fetchAI()">🔄 DIFFERENT PICKS</button>`;
+
   } catch(e) {
-    content.innerHTML = '<p style="color:var(--mag);text-align:center;font-family:monospace;font-size:.82rem;">Could not load recommendations. Try again.</p><button class="btn-glow" style="display:block;margin:12px auto;padding:10px 20px;" onclick="fetchAI()">RETRY</button>';
+    console.error('fetchAI error:', e);
+    content.innerHTML = '<p style="color:var(--mag);text-align:center;font-family:monospace;font-size:.82rem;">Could not load picks. Try again.</p><button class="btn-glow" style="display:block;margin:12px auto;padding:10px 20px;" onclick="fetchAI()">RETRY</button>';
   }
 }
 
