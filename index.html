@@ -1347,7 +1347,7 @@ function checkGiftCode() {
 function adminGiftPro(email) {
   // Activates Pro on the current device — share the gift URL with friends instead
   const code = GIFT_CODES[0];
-  const url = \`https://thegamerzhub.com?gift=\${code}\`;
+  const url = `https://thegamerzhub.com?gift=${code}`;
   if (navigator.clipboard) {
     navigator.clipboard.writeText(url).then(() => showToast('🎁 Gift link copied!', 'Share this with your friend to give them Pro'));
   } else {
