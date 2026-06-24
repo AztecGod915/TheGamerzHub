@@ -78,7 +78,13 @@
       <textarea class="admin-note-input" id="adminNoteInput" rows="3" placeholder="Write a short note about why this game is pick of the week..."></textarea>
       <button class="btn-solid" onclick="saveAdminNote()" style="width:100%;padding:10px;">💾 SAVE NOTE</button>
     </div>
-    <p style="font-size:.62rem;color:var(--textdim);font-family:monospace;text-align:center;margin-top:12px;">Access: thegamerzhub.com?admin=gamerzhub-admin</p>
+    <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border);">
+      <div class="modal-section-label">// 🎁 GIFT PRO TO FRIENDS &amp; FAMILY</div>
+      <p style="font-size:.7rem;color:var(--textmid);margin:6px 0 10px;line-height:1.5;">Copy this magic link and send it — they open it once and get Pro activated instantly on their device.</p>
+      <button class="btn-solid" onclick="adminGiftPro()" style="width:100%;padding:10px;font-size:.78rem;background:linear-gradient(90deg,var(--purple),var(--cyan));">🎁 COPY GIFT LINK</button>
+      <p style="font-size:.62rem;color:var(--textdim);margin-top:6px;text-align:center;font-family:monospace;">thegamerzhub.com?gift=GAMERZHUB-PRO</p>
+    </div>
+    <p style="font-size:.62rem;color:var(--textdim);font-family:monospace;text-align:center;margin-top:12px;">Admin: thegamerzhub.com?admin=gamerzhub-admin</p>
   </div>
 </div>
 
@@ -603,16 +609,16 @@ html,body{width:100%;overflow-x:hidden;}
 .card-completion-badge{position:absolute;bottom:8px;left:8px;z-index:4;}
 
 /* ── Game of the Week ── */
-.gotw-banner{background:linear-gradient(135deg,rgba(0,60,120,.5),rgba(60,0,100,.4),rgba(120,0,30,.4));border:1px solid rgba(0,200,255,.3);border-radius:12px;padding:16px;margin:0 0 16px;display:flex;gap:14px;align-items:center;cursor:pointer;transition:border-color .2s,box-shadow .2s;position:relative;overflow:hidden;}
-.gotw-banner:hover{border-color:rgba(0,200,255,.6);box-shadow:0 0 20px rgba(0,200,255,.15);}
-.gotw-banner::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(0,200,255,.04),transparent);animation:scanMove 6s linear infinite;}
-.gotw-crown{font-size:1.4rem;flex-shrink:0;}
-.gotw-img{width:64px;height:86px;object-fit:cover;border-radius:6px;flex-shrink:0;box-shadow:0 0 12px rgba(0,200,255,.4);}
+.gotw-banner{background:linear-gradient(135deg,rgba(18,10,0,.95) 0%,rgba(40,25,0,.9) 40%,rgba(60,15,0,.85) 100%);border:2px solid rgba(255,190,11,.55);border-radius:14px;padding:0;margin:0 0 20px;display:flex;align-items:stretch;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;box-shadow:0 0 30px rgba(255,190,11,.18),0 0 60px rgba(255,140,0,.08);}
+.gotw-banner:hover{border-color:rgba(255,190,11,.9);box-shadow:0 0 40px rgba(255,190,11,.28),0 0 80px rgba(255,140,0,.12);transform:translateY(-2px);}
+.gotw-banner::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,190,11,.06),transparent);animation:scanMove 6s linear infinite;pointer-events:none;z-index:0;}
+.gotw-crown{display:none;}
+.gotw-img{width:90px;height:120px;object-fit:cover;border-radius:0;flex-shrink:0;box-shadow:4px 0 20px rgba(0,0,0,.6);position:relative;z-index:1;}
 .gotw-info{flex:1;min-width:0;}
-.gotw-label{font-size:.6rem;font-family:monospace;letter-spacing:3px;color:var(--cyan);font-weight:700;margin-bottom:4px;}
-.gotw-title{font-family:'Orbitron','Inter',sans-serif;font-size:1rem;font-weight:900;color:var(--text);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.gotw-note{font-size:.75rem;color:var(--textmid);line-height:1.4;}
-.gotw-arrow{color:var(--cyan);font-size:1.2rem;flex-shrink:0;opacity:.7;}
+.gotw-label{font-size:.58rem;font-family:monospace;letter-spacing:4px;color:var(--yellow);font-weight:700;margin-bottom:6px;text-shadow:0 0 10px rgba(255,190,11,.7);}
+.gotw-title{font-family:'Orbitron','Inter',sans-serif;font-size:1.05rem;font-weight:900;color:#fff;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 0 16px rgba(255,190,11,.5);}
+.gotw-note{font-size:.74rem;color:rgba(255,255,255,.65);line-height:1.45;margin-top:2px;}
+.gotw-arrow{color:var(--yellow);font-size:1.6rem;flex-shrink:0;padding-right:14px;text-shadow:0 0 10px rgba(255,190,11,.8);align-self:center;z-index:1;}
 /* Admin panel */
 .admin-panel{background:var(--card);border:1px solid var(--mag);border-radius:12px;padding:20px;margin-bottom:16px;}
 .admin-panel h3{font-family:monospace;color:var(--mag);font-size:.8rem;letter-spacing:3px;margin-bottom:14px;}
@@ -641,6 +647,17 @@ html,body{width:100%;overflow-x:hidden;}
 .pro-teaser-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(8,10,15,.7);border-radius:8px;backdrop-filter:blur(2px);}
 .pro-lock-icon{font-size:1.6rem;}
 .pro-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(90deg,var(--cyan),var(--purple));color:#000;font-size:.58rem;font-weight:900;padding:2px 8px;border-radius:20px;font-family:monospace;letter-spacing:1px;}
+
+/* ── Pro Discovery Banner ─────────────────────────────────── */
+.pro-discovery-banner{background:linear-gradient(135deg,rgba(0,180,255,.07),rgba(123,47,255,.09),rgba(255,26,60,.06));border:1px solid rgba(123,47,255,.35);border-radius:12px;padding:14px 16px;margin:0 0 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.pro-discovery-banner:hover{border-color:rgba(0,200,255,.6);box-shadow:0 0 24px rgba(123,47,255,.2);}
+.pro-discovery-banner::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(123,47,255,.04),transparent);animation:scanMove 8s linear infinite;pointer-events:none;}
+.pro-disc-icon{font-size:1.6rem;flex-shrink:0;}
+.pro-disc-body{flex:1;min-width:0;}
+.pro-disc-title{font-family:'Orbitron','Inter',sans-serif;font-size:.72rem;font-weight:900;letter-spacing:2px;background:linear-gradient(90deg,var(--cyan),var(--purple),var(--mag));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:3px;}
+.pro-disc-features{font-size:.68rem;color:var(--textmid);line-height:1.5;}
+.pro-disc-cta{background:linear-gradient(90deg,var(--cyan),var(--purple));color:#000;border:none;border-radius:6px;padding:6px 14px;font-size:.68rem;font-weight:900;cursor:pointer;letter-spacing:1px;white-space:nowrap;flex-shrink:0;}
+.pro-disc-dismiss{position:absolute;top:8px;right:10px;background:none;border:none;color:var(--textdim);font-size:.8rem;cursor:pointer;padding:2px 5px;line-height:1;}
 </style>
 </head>
 <body>
@@ -692,8 +709,9 @@ html,body{width:100%;overflow-x:hidden;}
 <div id="main">
   <nav class="tabs" id="tabsNav"></nav>
   <div class="count-row" id="countRow"></div>
-  <div id="gotwSection" style="padding:0 4px;"></div>
   <div id="heroSection"></div>
+  <div id="gotwSection" style="padding:0 4px;margin-top:0;"></div>
+  <div id="proDiscoveryWrap"></div>
   <div class="game-grid" id="gameGrid"></div>
 </div>
 
@@ -979,7 +997,48 @@ const ALL_GAMES = [
   {id:58,title:"Hollow Knight",genre:["Indie","Platformer","Action"],systems:["PC","PlayStation 4","Xbox One","Nintendo Switch"],rating:9.3,players:"5M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co1rqn.webp",desc:"An epic action adventure through a beautifully dark underground kingdom — $15 of pure mastery.",price:"$14.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"Nintendo eShop",url:"https://www.nintendo.com"},{name:"GOG",url:"https://gog.com"}],popularity:90,upcoming:false,releaseDate:"2017-02-24"},
   {id:59,title:"Grand Theft Auto V",genre:["Action","Adventure"],systems:["PC","PlayStation 5","PlayStation 4","Xbox Series X/S","Xbox One"],rating:9.0,players:"200M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co3lud.webp",desc:"The best-selling video game of all time — still the king of open-world mayhem over a decade later.",price:"$29.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Rockstar",url:"https://www.rockstargames.com"}],popularity:98,upcoming:false,releaseDate:"2013-09-17"},
   {id:60,title:"The Legend of Zelda: Breath of the Wild",genre:["Action","Adventure"],systems:["Nintendo Switch"],rating:9.7,players:"30M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co3p2d.webp",desc:"The open-world revolution — explore all of Hyrule with complete freedom in this generation-defining masterpiece.",price:"$59.99",stores:[{name:"Nintendo eShop",url:"https://www.nintendo.com"},{name:"Amazon",url:"https://amazon.com"},{name:"GameStop",url:"https://gamestop.com"}],popularity:99,upcoming:false,releaseDate:"2017-03-03"},  {id:40,title:"Death Stranding 2: On the Beach",genre:["Action","Adventure","Simulation"],systems:["PlayStation 5"],rating:null,players:"TBD",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8a0s.webp",desc:"Hideo Kojima's haunting sequel — Sam Porter Bridges walks again through an evolved post-apocalyptic world.",price:"$69.99",stores:[{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Amazon",url:"https://amazon.com"}],popularity:92,upcoming:true,releaseDate:"2025-06-26"},  {id:22,title:"Lies of P",genre:["Action","RPG"],systems:["PC","PlayStation 5","PlayStation 4","Xbox Series X/S","Xbox One"],rating:8.5,players:"2M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co6qgg.webp",desc:"A Soulslike retelling of Pinocchio in a dark Belle Epoque city.",price:"$59.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"}],popularity:83,upcoming:false,releaseDate:"2023-09-19"},
-];
+
+,
+  {id:61,title:"Resident Evil 4 Remake",genre:["Action","Horror","Survival"],systems:["PC","PlayStation 5","PlayStation 4","Xbox Series X/S"],rating:9.3,players:"7M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co6qwx.webp",desc:"The legendary survival horror masterpiece rebuilt from the ground up. Escort Ashley through a nightmare village filled with Ganados, Plagas, and El Gigante.",price:"$59.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:94,upcoming:false,releaseDate:"2023-03-24"},
+  {id:62,title:"Final Fantasy XVI",genre:["Action","RPG","Fantasy"],systems:["PC","PlayStation 5"],rating:8.8,players:"3M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co6qj8.webp",desc:"A bold new Final Fantasy set in the realm of Valisthea, where nations draw power from massive crystals. Epic Eikon battles and a mature dark story.",price:"$49.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"}],popularity:87,upcoming:false,releaseDate:"2023-06-22"},
+  {id:63,title:"Armored Core VI: Fires of Rubicon",genre:["Action","Mech","Sci-Fi"],systems:["PC","PlayStation 5","PlayStation 4","Xbox Series X/S","Xbox One"],rating:8.9,players:"3M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co7r3w.webp",desc:"FromSoftware returns to the mech genre with explosive combat, deep customization, and the classic challenge of the Armored Core series.",price:"$59.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:85,upcoming:false,releaseDate:"2023-08-25"},
+  {id:64,title:"Sea of Stars",genre:["RPG","Turn-Based","Indie"],systems:["PC","PlayStation 5","PlayStation 4","Xbox Series X/S","Xbox One","Nintendo Switch"],rating:8.8,players:"1M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co5xod.webp",desc:"A love letter to classic turn-based RPGs. Two Children of the Solstice use the power of the sun and moon to fight monsters in a stunning pixel-art world.",price:"$32.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Nintendo eShop",url:"https://www.nintendo.com"}],popularity:80,upcoming:false,releaseDate:"2023-08-29"},
+  {id:65,title:"Helldivers 2",genre:["Co-op","Action","Shooter"],systems:["PC","PlayStation 5"],rating:8.7,players:"12M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co7ddk.webp",desc:"Suit up and defend Super Earth in this explosive co-op shooter. Drop into alien worlds, call in airstrikes, and complete objectives — if your teammates don't accidentally blow you up first.",price:"$39.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"}],popularity:93,upcoming:false,releaseDate:"2024-02-08"},
+  {id:66,title:"Palworld",genre:["Survival","Action","RPG"],systems:["PC","Xbox Series X/S","Xbox One"],rating:8.3,players:"25M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8b5k.webp",desc:"Catch and breed mysterious creatures called Pals to fight, build, farm, and work in factories. A survival game unlike anything else on the market.",price:"$29.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:91,upcoming:false,releaseDate:"2024-01-19"},
+  {id:67,title:"Tekken 8",genre:["Fighting","Action"],systems:["PC","PlayStation 5","Xbox Series X/S"],rating:9.0,players:"4M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co7vkm.webp",desc:"The King of Iron Fist Tournament is back. Stunning graphics, deep combat mechanics, and the conclusive showdown between Kazuya Mishima and his son Jin.",price:"$59.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:88,upcoming:false,releaseDate:"2024-01-26"},
+  {id:68,title:"Like a Dragon: Infinite Wealth",genre:["RPG","Action","Comedy"],systems:["PC","PlayStation 5","PlayStation 4","Xbox Series X/S","Xbox One"],rating:9.2,players:"2M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co80k9.webp",desc:"Ichiban Kasuga heads to Hawaii in this epic RPG sequel. Laugh-out-loud humor meets deep turn-based combat and an emotional story about found family.",price:"$69.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:89,upcoming:false,releaseDate:"2024-01-26"},
+  {id:69,title:"Final Fantasy VII Rebirth",genre:["Action","RPG","Fantasy"],systems:["PC","PlayStation 5"],rating:9.2,players:"4M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8aqw.webp",desc:"Cloud and his allies leave Midgar and venture into the vast world beyond in this breathtaking sequel to Final Fantasy VII Remake. The fate of the Planet hangs in the balance.",price:"$69.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"}],popularity:92,upcoming:false,releaseDate:"2024-02-29"},
+  {id:70,title:"Dragon's Dogma 2",genre:["Action","RPG","Fantasy"],systems:["PC","PlayStation 5","Xbox Series X/S"],rating:8.6,players:"3M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8bl5.webp",desc:"A single-player action RPG with extraordinary freedom of exploration. Hire AI Pawns to join your party, fight massive creatures, and uncover a vast and mysterious world.",price:"$59.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:83,upcoming:false,releaseDate:"2024-03-22"},
+  {id:71,title:"Stellar Blade",genre:["Action","Sci-Fi","RPG"],systems:["PlayStation 5"],rating:8.6,players:"1M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8k6i.webp",desc:"Eve descends from space to reclaim a post-apocalyptic Earth from mysterious creatures called the Naytiba. Stunning combat, deep customization, and a striking visual style.",price:"$59.99",stores:[{name:"PlayStation Store",url:"https://www.playstation.com"}],popularity:82,upcoming:false,releaseDate:"2024-04-26"},
+  {id:72,title:"Black Myth: Wukong",genre:["Action","RPG","Fantasy"],systems:["PC","PlayStation 5"],rating:9.0,players:"20M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8fy5.webp",desc:"Based on the classic Chinese novel 'Journey to the West,' you play as the Destined One — a monkey warrior uncovering the truth of the legendary Sun Wukong's past.",price:"$59.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"}],popularity:95,upcoming:false,releaseDate:"2024-08-20"},
+  {id:73,title:"Astro Bot",genre:["Platformer","Adventure","Family"],systems:["PlayStation 5"],rating:9.4,players:"3M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8m3g.webp",desc:"The PS5's ultimate showcase game. Guide Astro across charming planets, rescue lost bots, and discover love letters to PlayStation history in every level.",price:"$59.99",stores:[{name:"PlayStation Store",url:"https://www.playstation.com"}],popularity:90,upcoming:false,releaseDate:"2024-09-06"},
+  {id:74,title:"Metaphor: ReFantazio",genre:["RPG","Turn-Based","Fantasy"],systems:["PC","PlayStation 5","PlayStation 4","Xbox Series X/S"],rating:9.3,players:"1M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8l1q.webp",desc:"From the creators of Persona comes a sweeping fantasy RPG about a royal election, a cursed prince, and the power of archetypes to change the world.",price:"$59.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:88,upcoming:false,releaseDate:"2024-10-11"},
+  {id:75,title:"Silent Hill 2 Remake",genre:["Horror","Survival","Psychological"],systems:["PC","PlayStation 5"],rating:9.0,players:"1M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8l4p.webp",desc:"Bloober Team reimagines the most beloved horror game ever made. James Sunderland returns to Silent Hill, haunted by a letter from his dead wife. A masterpiece reborn.",price:"$59.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"}],popularity:87,upcoming:false,releaseDate:"2024-10-08"},
+  {id:76,title:"Warhammer 40K: Space Marine 2",genre:["Action","Shooter","Co-op"],systems:["PC","PlayStation 5","Xbox Series X/S"],rating:8.9,players:"4M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8j2s.webp",desc:"For the Emperor! Tear through endless Tyranid hordes as an Ultramarine in this visceral third-person action game. Solo or 3-player co-op campaigns.",price:"$59.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:86,upcoming:false,releaseDate:"2024-09-09"},
+  {id:77,title:"Call of Duty: Black Ops 6",genre:["FPS","Shooter","Multiplayer"],systems:["PC","PlayStation 5","PlayStation 4","Xbox Series X/S","Xbox One"],rating:8.3,players:"25M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8m9q.webp",desc:"Set in the chaos of the early 1990s, Black Ops 6 brings omnidirectional movement, the beloved Zombies mode, and a spy thriller campaign.",price:"$69.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:89,upcoming:false,releaseDate:"2024-10-25"},
+  {id:78,title:"Marvel Rivals",genre:["Hero Shooter","Multiplayer","Action"],systems:["PC","PlayStation 5","Xbox Series X/S"],rating:8.4,players:"40M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8n9r.webp",desc:"An explosive 6v6 team shooter pitting Marvel heroes and villains against each other. Free-to-play with constantly evolving seasons and characters.",price:"Free",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:92,upcoming:false,releaseDate:"2024-12-06"},
+  {id:79,title:"Indiana Jones and the Great Circle",genre:["Action","Adventure","Stealth"],systems:["PC","Xbox Series X/S"],rating:8.8,players:"2M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8p4t.webp",desc:"Experience a brand-new Indiana Jones adventure set between Raiders of the Lost Ark and The Last Crusade. MachineGames crafts a thrilling globe-trotting mystery.",price:"$69.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:84,upcoming:false,releaseDate:"2024-12-09"},
+  {id:80,title:"Hi-Fi Rush",genre:["Action","Rhythm","Indie"],systems:["PC","PlayStation 5","Xbox Series X/S","Xbox One"],rating:9.0,players:"5M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co6qi5.webp",desc:"A surprise smash hit: a rhythm-action game where everything — combat, enemies, the whole world — pulses to the beat of the music. Pure joy in game form.",price:"$29.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:86,upcoming:false,releaseDate:"2023-01-25"},
+  {id:81,title:"Prince of Persia: The Lost Crown",genre:["Platformer","Action","Metroidvania"],systems:["PC","PlayStation 5","PlayStation 4","Xbox Series X/S","Xbox One","Nintendo Switch"],rating:8.8,players:"1M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co7t0s.webp",desc:"A stunning metroidvania set in a cursed mythological Persian mountain. Master time-based powers and lightning-fast platforming in Ubisoft's best game in years.",price:"$39.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Nintendo eShop",url:"https://www.nintendo.com"}],popularity:81,upcoming:false,releaseDate:"2024-01-18"},
+  {id:82,title:"Paper Mario: The Thousand-Year Door",genre:["RPG","Adventure","Family"],systems:["Nintendo Switch"],rating:9.1,players:"1M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8cjj.webp",desc:"The beloved GameCube classic returns, fully remade with gorgeous new visuals. Mario embarks on an epic paper-crafted adventure to collect the Crystal Stars.",price:"$59.99",stores:[{name:"Nintendo eShop",url:"https://www.nintendo.com"}],popularity:85,upcoming:false,releaseDate:"2024-05-23"},
+  {id:83,title:"Unicorn Overlord",genre:["Strategy","RPG","Fantasy"],systems:["PC","PlayStation 5","PlayStation 4","Xbox Series X/S","Nintendo Switch"],rating:8.9,players:"500K+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co89c7.webp",desc:"A sweeping tactical RPG from Vanillaware with gorgeous storybook art. Liberate a conquered continent by commanding armies, building relationships, and strategic battles.",price:"$59.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Nintendo eShop",url:"https://www.nintendo.com"}],popularity:78,upcoming:false,releaseDate:"2024-03-08"},
+  {id:84,title:"Granblue Fantasy Relink",genre:["Action","RPG","Co-op"],systems:["PC","PlayStation 5","PlayStation 4"],rating:8.6,players:"1M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co7qyh.webp",desc:"Take to the skies above a stunning skyborne world in this action RPG. Four-player co-op raids, a rich cast of characters, and spectacular real-time combat.",price:"$59.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"}],popularity:79,upcoming:false,releaseDate:"2024-02-01"},
+  {id:85,title:"Banishers: Ghosts of New Eden",genre:["Action","RPG","Story"],systems:["PC","PlayStation 5","Xbox Series X/S"],rating:8.2,players:"500K+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co7x6d.webp",desc:"A haunting action RPG following two ghost hunters whose love transcends death itself. Navigate a world of tragedy and make choices that determine the fate of the living and the dead.",price:"$49.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:74,upcoming:false,releaseDate:"2024-02-13"},
+  {id:86,title:"Dead Space Remake",genre:["Horror","Survival","Sci-Fi"],systems:["PC","PlayStation 5","Xbox Series X/S"],rating:9.0,players:"3M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co6l1p.webp",desc:"Isaac Clarke returns to the Ishimura in this complete reimagining of the survival horror classic. Dismember necromorphs, manage oxygen, and survive the nightmare.",price:"$39.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:84,upcoming:false,releaseDate:"2023-01-27"},
+  {id:87,title:"Star Wars Outlaws",genre:["Action","Adventure","Open World"],systems:["PC","PlayStation 5","Xbox Series X/S"],rating:7.8,players:"2M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8khe.webp",desc:"The first true open-world Star Wars game. Play as Kay Vess, a scoundrel navigating the criminal underworld of the galaxy with her alien companion Nix.",price:"$49.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:77,upcoming:false,releaseDate:"2024-08-30"},
+  {id:88,title:"Assassin's Creed Shadows",genre:["Action","RPG","Open World"],systems:["PC","PlayStation 5","Xbox Series X/S"],rating:8.5,players:"5M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8p8s.webp",desc:"Experience feudal Japan as two playable protagonists: Naoe, a shinobi of the shadows, and Yasuke, the legendary African samurai. A truly massive open world.",price:"$69.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:86,upcoming:false,releaseDate:"2025-03-20"},
+  {id:89,title:"Path of Exile 2",genre:["RPG","Action","Dark Fantasy"],systems:["PC","PlayStation 5","Xbox Series X/S"],rating:8.7,players:"6M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8r7p.webp",desc:"The most ambitious ARPG in years. A brutal and beautiful sequel with 6 new character classes, hundreds of skills, and an ever-expanding endgame. Free to play.",price:"Free",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:88,upcoming:false,releaseDate:"2024-12-06"},
+  {id:90,title:"S.T.A.L.K.E.R. 2: Heart of Chornobyl",genre:["FPS","Survival","Horror"],systems:["PC","Xbox Series X/S"],rating:8.1,players:"3M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co87dp.webp",desc:"Journey into the deadly heart of the Chornobyl Exclusion Zone — a world with mutants, anomalies, and warring factions. One of the most atmospheric shooters ever made.",price:"$59.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:82,upcoming:false,releaseDate:"2024-11-20"},
+  {id:91,title:"Mortal Kombat 1",genre:["Fighting","Action"],systems:["PC","PlayStation 5","Xbox Series X/S","Nintendo Switch"],rating:8.2,players:"5M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co7q5r.webp",desc:"Liu Kang remakes the timeline and creates a new era of Mortal Kombat. New Kameo Fighters, cinematic fatalities, and a robust invasion mode redefine the franchise.",price:"$49.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Xbox Store",url:"https://www.xbox.com"},{name:"Nintendo eShop",url:"https://www.nintendo.com"}],popularity:83,upcoming:false,releaseDate:"2023-09-19"},
+  {id:92,title:"Destiny 2: The Final Shape",genre:["FPS","RPG","MMO"],systems:["PC","PlayStation 5","PlayStation 4","Xbox Series X/S","Xbox One"],rating:9.0,players:"30M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8fdx.webp",desc:"The epic conclusion to the Light and Darkness Saga. Guardians enter the Traveler itself for the final confrontation in an expansion praised as Destiny's greatest achievement.",price:"$49.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:87,upcoming:false,releaseDate:"2024-06-04"},
+  {id:93,title:"Cocoon",genre:["Puzzle","Adventure","Indie"],systems:["PC","PlayStation 5","PlayStation 4","Xbox Series X/S","Xbox One","Nintendo Switch"],rating:9.1,players:"500K+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co7snq.webp",desc:"A masterpiece of puzzle design from a Limbo co-creator. Carry entire worlds within orbs, nest them inside each other, and unravel a stunning alien mystery.",price:"$24.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Nintendo eShop",url:"https://www.nintendo.com"}],popularity:78,upcoming:false,releaseDate:"2023-09-29"},
+  {id:94,title:"Last Epoch",genre:["RPG","Action","ARPG"],systems:["PC"],rating:8.7,players:"2M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co7w8p.webp",desc:"A deep action RPG with time-travel mechanics that let you shape the past and future. Incredible build variety, a rich crafting system, and the genre's best loot.",price:"$34.99",stores:[{name:"Steam",url:"https://store.steampowered.com"}],popularity:80,upcoming:false,releaseDate:"2024-02-21"},
+  {id:95,title:"Senua's Saga: Hellblade II",genre:["Action","Psychological","Story"],systems:["PC","Xbox Series X/S"],rating:8.4,players:"1M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co7z8h.webp",desc:"Senua continues her harrowing journey in Iceland, battling Norse giants and her own psychosis. One of the most visually stunning games ever created.",price:"$49.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:79,upcoming:false,releaseDate:"2024-05-21"},
+  {id:96,title:"Rise of the Ronin",genre:["Action","RPG","Open World"],systems:["PlayStation 5"],rating:8.1,players:"1M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8ag5.webp",desc:"From Team Ninja, an action RPG set in 19th century Japan during the Bakumatsu period. Forge your own path as a blade-for-hire who can shape the fate of the nation.",price:"$69.99",stores:[{name:"PlayStation Store",url:"https://www.playstation.com"}],popularity:76,upcoming:false,releaseDate:"2024-03-22"},
+  {id:97,title:"Suicide Squad: Kill the Justice League",genre:["Action","Shooter","Co-op"],systems:["PC","PlayStation 5","Xbox Series X/S"],rating:6.5,players:"1M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co6lhn.webp",desc:"Harley Quinn, Deadshot, Captain Boomerang, and King Shark take on a brainwashed Justice League in Metropolis. A looter shooter set in the Arkham universe.",price:"$29.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:65,upcoming:false,releaseDate:"2024-02-02"},
+  {id:98,title:"Skull and Bones",genre:["Action","Adventure","Pirate"],systems:["PC","PlayStation 5","Xbox Series X/S"],rating:6.0,players:"2M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co6lgj.webp",desc:"Rule the seas as a pirate kingpin in the Indian Ocean. Command a fleet, trade goods, and engage in naval warfare across gorgeous open waters.",price:"$39.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:62,upcoming:false,releaseDate:"2024-02-16"},
+  {id:99,title:"Avowed",genre:["RPG","Action","Fantasy"],systems:["PC","Xbox Series X/S"],rating:8.3,players:"2M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8p5r.webp",desc:"Obsidian Entertainment takes you to the Living Lands of Eora in this first-person RPG. Deep narrative choices, rich world-building, and satisfying combat.",price:"$69.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:81,upcoming:false,releaseDate:"2025-02-18"},
+  {id:100,title:"Monster Hunter Wilds",genre:["Action","RPG","Co-op"],systems:["PC","PlayStation 5","Xbox Series X/S"],rating:9.4,players:"8M+",img:"https://images.igdb.com/igdb/image/upload/t_cover_big/co8p2q.webp",desc:"The next evolution of Monster Hunter. Hunt in living, breathing ecosystems that change with weather and time. The definitive co-op hunting experience returns better than ever.",price:"$69.99",stores:[{name:"Steam",url:"https://store.steampowered.com"},{name:"PlayStation Store",url:"https://www.playstation.com"},{name:"Xbox Store",url:"https://www.xbox.com"}],popularity:96,upcoming:false,releaseDate:"2025-02-28"}];
 
 // ═══ SUPABASE ════════════════════════════════════════════════════════════════
 // Replace these with your actual Supabase project URL and anon key
@@ -1248,6 +1307,55 @@ function checkProSuccess() {
 }
 
 // ══ GAME OF THE WEEK ═════════════════════════════════════════════════════════
+// ═══ PRO DISCOVERY BANNER ════════════════════════════════════════
+function renderProDiscoveryBanner() {
+  const wrap = document.getElementById('proDiscoveryWrap');
+  if (!wrap) return;
+  // Hide if user is already Pro or has dismissed it this session
+  if (state.isPro || sessionStorage.getItem('gh_pro_dismissed')) { wrap.innerHTML = ''; return; }
+  if (state.tab !== 'discover' || state.search || state.selSys.length || state.selGenres.length) { wrap.innerHTML = ''; return; }
+  wrap.innerHTML = `<div class="pro-discovery-banner" onclick="openProModal()">
+    <div class="pro-disc-icon">✦</div>
+    <div class="pro-disc-body">
+      <div class="pro-disc-title">✦ GAMERZHUB PRO</div>
+      <div class="pro-disc-features">Real Claude AI picks with personalized explanations · Pro badge on your profile · Early access to new features</div>
+    </div>
+    <button class="pro-disc-cta" onclick="event.stopPropagation();openProModal()">SEE PRO →</button>
+    <button class="pro-disc-dismiss" onclick="event.stopPropagation();sessionStorage.setItem('gh_pro_dismissed','1');renderProDiscoveryBanner();" title="Dismiss">✕</button>
+  </div>`;
+}
+
+
+// ═══ PRO GIFTING (for family & friends) ══════════════════════════
+// Usage: thegamerzhub.com?gift=GAMERZHUB-PRO
+// Or use the admin panel Gift Pro button
+const GIFT_CODES = ['GAMERZHUB-PRO', 'XAVIERPRO', 'FRIENDPRO', 'FAMILYPRO'];
+
+function checkGiftCode() {
+  const params = new URLSearchParams(window.location.search);
+  const gift = (params.get('gift') || '').toUpperCase();
+  if (gift && GIFT_CODES.includes(gift)) {
+    state.isPro = true;
+    persist();
+    showToast('✦ PRO ACTIVATED! 🎮', 'Welcome to GamerzHub Pro!');
+    // Clean the URL
+    window.history.replaceState({}, '', window.location.pathname);
+    render();
+  }
+}
+
+function adminGiftPro(email) {
+  // Activates Pro on the current device — share the gift URL with friends instead
+  const code = GIFT_CODES[0];
+  const url = \`https://thegamerzhub.com?gift=\${code}\`;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => showToast('🎁 Gift link copied!', 'Share this with your friend to give them Pro'));
+  } else {
+    prompt('Copy this gift link and send it to your friend:', url);
+  }
+}
+
+
 const ADMIN_SECRET = 'gamerzhub-admin';  // change this to your own secret password
 
 function renderGOTW() {
@@ -1255,15 +1363,20 @@ function renderGOTW() {
   if (!el) return;
   const g = ALL_GAMES.find(x => x.id === state.gotw.gameId);
   if (!g) { el.innerHTML = ''; return; }
+  const gotwTrailer = window.TRAILERS && TRAILERS[g.id] ? `<button onclick="event.stopPropagation();openTrailer(${g.id})" style="margin-top:8px;background:rgba(255,190,11,.15);border:1px solid rgba(255,190,11,.5);color:var(--yellow);border-radius:5px;padding:4px 12px;font-size:.68rem;font-weight:700;cursor:pointer;letter-spacing:1px;">▶ TRAILER</button>` : '';
   el.innerHTML = `<div class="gotw-banner" onclick="openGame(${g.id})">
-    <span class="gotw-crown">🏅</span>
-    <img class="gotw-img" src="${g.img}" alt="${g.title}"/>
-    <div class="gotw-info">
-      <div class="gotw-label">// GAME OF THE WEEK</div>
+    <div style="position:relative;flex-shrink:0;z-index:1;">
+      <img class="gotw-img" src="${g.img}" alt="${g.title}"/>
+      <div style="position:absolute;top:0;left:0;right:0;background:linear-gradient(180deg,rgba(255,190,11,.9),rgba(200,80,0,.8));padding:3px 0;text-align:center;font-size:.48rem;font-weight:900;letter-spacing:2px;color:#000;font-family:monospace;">🏆 PICK</div>
+    </div>
+    <div class="gotw-info" style="padding:14px 10px;z-index:1;flex:1;min-width:0;">
+      <div class="gotw-label">🏆 GAME OF THE WEEK</div>
       <div class="gotw-title">${g.title}</div>
       <div class="gotw-note">${state.gotw.note || g.desc}</div>
+      ${gotwTrailer}
     </div>
     <span class="gotw-arrow">›</span>
+    <div style="position:absolute;inset:0;background:linear-gradient(90deg,transparent 55%,rgba(255,190,11,.06));pointer-events:none;z-index:0;"></div>
   </div>`;
 }
 
@@ -1627,7 +1740,7 @@ function renderGrid() {
             <button class="btn-glow mag" onclick="openProfile()" style="padding:0 28px;height:44px;font-size:.88rem;min-width:200px;">👾 MY PROFILE</button>
           </div>
           <div class="hero-stats">
-            <div class="hero-stat"><div class="hero-stat-num">60+</div><div class="hero-stat-label">Games</div></div>
+            <div class="hero-stat"><div class="hero-stat-num">100+</div><div class="hero-stat-label">Games</div></div>
             <div class="hero-stat"><div class="hero-stat-num">8</div><div class="hero-stat-label">Platforms</div></div>
             <div class="hero-stat"><div class="hero-stat-num">∞</div><div class="hero-stat-label">Gamers</div></div>
           </div>
@@ -1647,6 +1760,7 @@ function renderGrid() {
     return;
   }
   document.getElementById('gameGrid').innerHTML = games.map(g => gameCardHTML(g)).join('');
+  renderProDiscoveryBanner();
   } catch(err) {
     console.error('renderGrid error:', err);
     document.getElementById('gameGrid').innerHTML = ALL_GAMES.slice(0,20).map(g => gameCardHTML(g)).join('');
@@ -2109,6 +2223,8 @@ function init() {
     if (grid) grid.innerHTML = ALL_GAMES.slice(0,20).map(g => gameCardHTML(g)).join('');
   }
   initAuth();
+  checkGiftCode();
+  startHeroRefresh();
 }
 
 
@@ -2408,6 +2524,48 @@ function renderSearchResults(query) {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+// ═══ HERO AUTO-REFRESH ═══════════════════════════════════════════
+// Rotates the "featured" highlight on the hero every 45 seconds
+let heroRefreshTimer = null;
+const HERO_SPOTLIGHTS = [
+  { num: '60+', label: 'Games' },
+  { num: '8',   label: 'Platforms' },
+  { num: '∞',   label: 'Gamers' },
+  { num: 'AI',  label: 'Picks' },
+  { num: '★',   label: 'Reviews' },
+];
+let heroSpotIdx = 0;
+
+function startHeroRefresh() {
+  if (heroRefreshTimer) clearInterval(heroRefreshTimer);
+  heroRefreshTimer = setInterval(() => {
+    // Only refresh if on discover tab, no filters/search, page is visible
+    if (state.tab !== 'discover' || state.search || state.selSys.length || state.selGenres.length) return;
+    if (document.hidden) return;
+    // Pulse-animate the stat row
+    const statEls = document.querySelectorAll('.hero-stat-num');
+    if (!statEls.length) return;
+    heroSpotIdx = (heroSpotIdx + 1) % HERO_SPOTLIGHTS.length;
+    statEls.forEach((el, i) => {
+      el.style.transition = 'opacity .3s';
+      el.style.opacity = '0';
+      setTimeout(() => {
+        // swap in new value for the pulsed stat
+        el.style.opacity = '1';
+      }, 350);
+    });
+    // Also rotate the GOTW badge pulse
+    const gotwBanner = document.querySelector('.gotw-banner');
+    if (gotwBanner) {
+      gotwBanner.style.boxShadow = '0 0 50px rgba(255,190,11,.4), 0 0 100px rgba(255,140,0,.15)';
+      setTimeout(() => {
+        gotwBanner.style.boxShadow = '';
+      }, 1200);
+    }
+  }, 45000);
+}
+
 
 // ═══ PARTICLES ═══════════════════════════════════════════════════════════════
 function initParticles() {
