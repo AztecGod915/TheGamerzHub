@@ -2,7 +2,7 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', 'https://www.thegamerzhub.com');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
 
-  const CACHE_LIFE = 7 * 24 * 60 * 60; // 7 days, in seconds
+  const CACHE_LIFE = 30 * 24 * 60 * 60; // 30 days, in seconds
   res.setHeader('Cache-Control', `s-maxage=${CACHE_LIFE}, stale-while-revalidate`);
 
   try {
